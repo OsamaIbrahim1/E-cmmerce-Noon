@@ -38,7 +38,7 @@ export const signUp = async (req, res, next) => {
     to: email,
     subject: "Email Verification",
     message: `
-    <h2>Please click on this link to verify your email</h2>
+    <h2>Please click on this link to verify your email, yazezo</h2>
     <a href="http://localhost:3000/auth/verify-email?token=${usertoken}">Verify Email</a>`,
   });
   if (!isEmailSent)
@@ -49,7 +49,7 @@ export const signUp = async (req, res, next) => {
   // * hash password and check password is hashed
   const hashedPassword = bcryptjs.hashSync(password, +process.env.SALT_ROUNDS);
   if (!hashedPassword)
-    return next(new Error(`password not hashed`, { cause: 400 }));
+    return next(new Error(`password not hashed`, { cause: 404 }));
 
   // * create new document in the database
   const newUser = await User.create({
@@ -61,7 +61,7 @@ export const signUp = async (req, res, next) => {
     role,
     age,
   });
-  if (!newUser) return next(new Error(`user not created`, { cause: 400 }));
+  if (!newUser) return next(new Error(`user not created`, { cause: 404 }));
 
   // * response success
   res.status(200).json({
@@ -91,7 +91,7 @@ export const verifyEmail = async (req, res, next) => {
   if (!user) return next(new Error(`user not found`, { cause: 404 }));
 
   // * response successfully
-  res.status(200).json({
+  res.status(201).json({
     success: true,
     message: "Email verified successfully,please try to login",
   });
@@ -100,6 +100,10 @@ export const verifyEmail = async (req, res, next) => {
 //============================= Sign In =============================//
 /**
  * * destructure data from body
+ * * check if email already exists
+ * * check if password matched
+ * * generate token for user
+ * * update islogged in = true
  */
 
 export const login = async (req, res, next) => {
@@ -122,7 +126,7 @@ export const login = async (req, res, next) => {
 
   // * generate token for user
   const token = jwt.sign(
-    { email: user.email, id: user._id, isloggedIn: true },
+    { email, id: user._id, isloggedIn: true },
     process.env.JWT_SECRET_LOGIN,
     { expiresIn: "1d" }
   );
@@ -130,4 +134,56 @@ export const login = async (req, res, next) => {
   // * update islogged in = true
   user.isloggedIn = true;
   user.save();
+
+  // * response successfully
+  res.status(200).json({ message: "logged in successfully", data: { token } });
+};
+
+//============================= update user =============================//
+/**
+ * * destructure the required data from the request body and request authUser
+ * * check is email already exists
+ * * update user and check if updated successfully
+ * * response successfully
+ */
+export const updateUser = async (req, res, next) => {
+  // * destructure the required data from the request body and request authUser
+  const { username, email, phoneNumbers, addresses, role, age } = req.body;
+  const { _id } = req.authUser;
+
+  // * check is email already exists
+  const checkEmail = await User.findOne({ email });
+  if (checkEmail)
+    return next(new Error("Email already exists", { cause: 409 }));
+
+  // * update user and check if updated successfully
+  const userUpdated = await User.findByIdAndUpdate(
+    { _id },
+    { username, email, phoneNumbers, addresses, role, age },
+    { new: true }
+  );
+  if (!userUpdated) return next(new Error("user not updated", { cause: 409 }));
+
+  // * response successfully
+  res.status(200).json({ message: "updated successfully", userUpdated });
+};
+
+//============================= delete user =============================//
+/**
+ * * destructure the user data from request headers
+ * * find the user and delete them from the database
+ * * response successfully
+ */
+export const deleteUser = async (req, res, next) => {
+  // * destructure the user data from request headers
+  const { _id } = req.authUser;
+
+  // * find the user and delete them from the database
+  const user = await User.findByIdAndDelete(_id);
+  if (!user) {
+    return next(new Error("User not found", { cause: 404 }));
+  }
+
+  // * response successfully
+  res.status(200).json({ message: "Successfully deleted", data: user });
 };
