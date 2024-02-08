@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 import User from "../../../DB/models/user.model.js";
 import sendEmailService from "../services/send-email.service.js";
+import Category from "../../../DB/models/category.model.js";
 
 //============================= signUp =============================//
 /**
@@ -142,19 +143,35 @@ export const login = async (req, res, next) => {
 //============================= update user =============================//
 /**
  * * destructure the required data from the request body and request authUser
- * * check is email already exists
+ * * check is user already exists
+ * * if user wonts to update email
  * * update user and check if updated successfully
  * * response successfully
  */
 export const updateUser = async (req, res, next) => {
   // * destructure the required data from the request body and request authUser
   const { username, email, phoneNumbers, addresses, role, age } = req.body;
-  const { _id } = req.authUser;
+  const { _id, oldEmail } = req.authUser;
 
   // * check is email already exists
-  const checkEmail = await User.findOne({ email });
-  if (checkEmail)
-    return next(new Error("Email already exists", { cause: 409 }));
+  const checkUser = await User.findById(_id);
+  if (!checkUser) return next(new Error("User not exists", { cause: 409 }));
+
+  // * if user wonts to update email
+  if (email) {
+    if (oldEmail === email)
+      return next(
+        new Error("this email is the same old email", { cause: 400 })
+      );
+    const checkEmail = await User.findOne({ email });
+    if (checkEmail) {
+      return next(
+        new Error("Email already exists,please enter another one.", {
+          cause: 409,
+        })
+      );
+    }
+  }
 
   // * update user and check if updated successfully
   const userUpdated = await User.findByIdAndUpdate(
@@ -183,6 +200,10 @@ export const deleteUser = async (req, res, next) => {
   if (!user) {
     return next(new Error("User not found", { cause: 404 }));
   }
+
+  // * delete the category's user deleted
+  const category = await Category.findOneAndDelete({ addedBy: _id });
+  if (!category) return next(new Error("Category not deleted", { cause: 409 }));
 
   // * response successfully
   res.status(200).json({ message: "Successfully deleted", data: user });

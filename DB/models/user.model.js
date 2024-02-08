@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 import { systemRoles } from "../../src/utils/system-role.js";
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -27,7 +27,7 @@ const userSchema = new Schema(
     addresses: [{ type: String, required: true }],
     role: {
       type: String,
-      enum: [systemRoles.ADMIN, systemRoles.USER],
+      enum: [systemRoles.ADMIN, systemRoles.USER,systemRoles.SUPER_ADMIN],
       default: systemRoles.USER,
     },
     isEmailVerified: {
@@ -47,4 +47,4 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("User", userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

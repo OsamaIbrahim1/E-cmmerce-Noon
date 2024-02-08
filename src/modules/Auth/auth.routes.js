@@ -1,6 +1,7 @@
 import { Router } from "express";
-import * as authController from "./auth.controller.js";
 import expressAsyncHandler from "express-async-handler";
+
+import * as authController from "./auth.controller.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
 import {
   deleteUserSchema,
@@ -8,9 +9,9 @@ import {
   signUpSchema,
   updateUserSchema,
   verifyEmailSchema,
-} from "./Validation-Schema.auth.js";
+} from "./auth.Validation-Schema.js";
 import { auth } from "../../middlewares/auth.middleware.js";
-import { systemRoles } from "../../utils/system-role.js";
+import { endPointsRoles } from "./Auth.endpoint.js";
 
 const router = Router();
 
@@ -21,7 +22,6 @@ router.post(
 );
 router.get(
   "/verify-email",
-  auth(systemRoles.ADMIN, systemRoles.USER),
   validationMiddleware(verifyEmailSchema),
   expressAsyncHandler(authController.verifyEmail)
 );
@@ -34,14 +34,14 @@ router.post(
 
 router.put(
   "/update",
-  auth([systemRoles.ADMIN, systemRoles.USER]),
+  auth(endPointsRoles.UPDATE_AND_DELETE_USER),
   validationMiddleware(updateUserSchema),
   expressAsyncHandler(authController.updateUser)
 );
 
 router.delete(
   "/delete",
-  auth([systemRoles.ADMIN, systemRoles.USER]),
+  auth(endPointsRoles.UPDATE_AND_DELETE_USER),
   validationMiddleware(deleteUserSchema),
   expressAsyncHandler(authController.deleteUser)
 );
