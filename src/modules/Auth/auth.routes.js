@@ -46,4 +46,11 @@ router.delete(
   expressAsyncHandler(authController.deleteUser)
 );
 
+router.get(
+  "/getUserData",
+  auth(endPointsRoles.UPDATE_AND_DELETE_USER),
+  validationMiddleware(deleteUserSchema),
+  expressAsyncHandler(authController.getUserData)
+);
+
 export default router;

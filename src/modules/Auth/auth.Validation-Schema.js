@@ -47,3 +47,6 @@ export const updateUserSchema = {
 export const deleteUserSchema = {
   headers: generalRules.headersRules,
 };
+export const getDataUserSchema = {
+  headers: generalRules.headersRules,
+};

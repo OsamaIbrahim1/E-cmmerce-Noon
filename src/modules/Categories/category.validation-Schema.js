@@ -11,6 +11,7 @@ export const addCategorySchema = {
 export const updateCategorySchema = {
   body: Joi.object({
     name: Joi.string().trim(),
+    oldPublicId: generalRules.dbId
   }),
   params: Joi.object({ categoryId: generalRules.dbId }),
   headers: generalRules.headersRules,

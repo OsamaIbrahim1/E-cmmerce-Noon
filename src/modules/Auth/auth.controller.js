@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import User from "../../../DB/models/user.model.js";
 import sendEmailService from "../services/send-email.service.js";
 import Category from "../../../DB/models/category.model.js";
+import SubCategories from "../../../DB/models/Sub-Category.model.js";
+import Brand from "../../../DB/models/brand.model.js";
 
 //============================= signUp =============================//
 /**
@@ -106,7 +108,6 @@ export const verifyEmail = async (req, res, next) => {
  * * generate token for user
  * * update islogged in = true
  */
-
 export const login = async (req, res, next) => {
   // * destructure data from body
   const { email, password } = req.body;
@@ -134,7 +135,7 @@ export const login = async (req, res, next) => {
 
   // * update islogged in = true
   user.isloggedIn = true;
-  user.save();
+  await user.save();
 
   // * response successfully
   res.status(200).json({ message: "logged in successfully", data: { token } });
@@ -152,10 +153,6 @@ export const updateUser = async (req, res, next) => {
   // * destructure the required data from the request body and request authUser
   const { username, email, phoneNumbers, addresses, role, age } = req.body;
   const { _id, oldEmail } = req.authUser;
-
-  // * check is email already exists
-  const checkUser = await User.findById(_id);
-  if (!checkUser) return next(new Error("User not exists", { cause: 409 }));
 
   // * if user wonts to update email
   if (email) {
@@ -201,10 +198,39 @@ export const deleteUser = async (req, res, next) => {
     return next(new Error("User not found", { cause: 404 }));
   }
 
-  // * delete the category's user deleted
-  const category = await Category.findOneAndDelete({ addedBy: _id });
-  if (!category) return next(new Error("Category not deleted", { cause: 409 }));
+  // * delete subCategories and Brands
+  const categories = await Category.find({ addedBy: _id });
+  for (const category of categories) {
+    await SubCategories.deleteMany({ categoryId: category._id });
+    await Brand.deleteMany({ categoryId: category._id });
+  }
 
+  // * delete the category's user deleted
+  const deleteCategory = await Category.deleteMany({ addedBy: _id });
+  if (!deleteCategory) {
+    return next(new Error("Category not deleted", { cause: 409 }));
+  }
   // * response successfully
   res.status(200).json({ message: "Successfully deleted", data: user });
+};
+
+//============================= get data user =============================//
+/**
+ * * destructure _id from authUser
+ * * get user data
+ * * response successfully
+ */
+export const getUserData = async (req, res, next) => {
+  // * destructure _id from authUser
+  const { _id } = req.authUser;
+
+  // * get user data
+  const user = await User.findById(_id).select(
+    "-password -isEmailVerified -_id -isloggedIn"
+    // "username email phoneNumbers addresses role age"
+  );
+  if (!user) return next(new Error("user not found", { cause: 404 }));
+
+  // * response successfully
+  res.status(200).json({ message: "user data", data: user });
 };

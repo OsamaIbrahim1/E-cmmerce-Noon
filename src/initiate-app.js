@@ -10,6 +10,8 @@ export const initiateApp = (app, express) => {
 
   app.use("/auth", routers.userRouter);
   app.use("/category", routers.categoryRouter);
+  app.use("/subCategory", routers.subCategoryRouter);
+  app.use("/brand", routers.brandRouter);
   app.use(globalResponse);
 
   db_connection();

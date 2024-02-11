@@ -9,10 +9,17 @@ const categorySchema = new mongoose.Schema(
       public_id: { type: String, required: true, unique: true },
     },
     folderId: { type: String, required: true, unique: true },
-    addedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    addedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true }, // Super Admin
     updatedBy: { type: mongoose.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-export default mongoose.models.Category || mongoose.model("Category", categorySchema);
+categorySchema.virtual("subCategories", {
+  ref: "SubCategory",
+  localField: "_id",
+  foreignField: "categoryId",
+});
+
+export default mongoose.models.Category ||
+  mongoose.model("Category", categorySchema);

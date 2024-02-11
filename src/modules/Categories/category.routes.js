@@ -7,7 +7,11 @@ import { allowedExtensions } from "../../utils/allowedExtentions.js";
 import { endPointsRoles } from "./category.endpoint.js";
 import { auth } from "../../middlewares/auth.middleware.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
-import { addCategorySchema, deleteCategorySchema, updateCategorySchema } from "./category.validation-Schema.js";
+import {
+  addCategorySchema,
+  deleteCategorySchema,
+  updateCategorySchema,
+} from "./category.validation-Schema.js";
 
 const router = Router();
 
@@ -32,6 +36,11 @@ router.delete(
   auth(endPointsRoles.ADD_CATEGORY),
   validationMiddleware(deleteCategorySchema),
   expressAsyncHandler(categoryController.deleteCategory)
+);
+
+router.get(
+  "/getAllCategory",
+  expressAsyncHandler(categoryController.getAllCategory)
 );
 
 export default router;
