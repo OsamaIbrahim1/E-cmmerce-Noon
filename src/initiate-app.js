@@ -1,5 +1,7 @@
 import db_connection from "../DB/connection.js";
 import { globalResponse } from "./middlewares/global-response.middleware.js";
+import { rollbackSavedDocuments } from "./middlewares/rollback-saved-Documents.js";
+import { rollbackUploadedFiles } from "./middlewares/rollback-uploaded-files.middleware.js";
 
 import * as routers from "./modules/index.routes.js";
 
@@ -12,7 +14,9 @@ export const initiateApp = (app, express) => {
   app.use("/category", routers.categoryRouter);
   app.use("/subCategory", routers.subCategoryRouter);
   app.use("/brand", routers.brandRouter);
-  app.use(globalResponse);
+  app.use("/product", routers.productRouter);
+  app.use("/cart", routers.cartRouter);
+  app.use(globalResponse, rollbackUploadedFiles, rollbackSavedDocuments);
 
   db_connection();
   app.listen(port, () => {

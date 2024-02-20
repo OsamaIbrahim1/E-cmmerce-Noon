@@ -4,7 +4,7 @@ import expressAsyncHandler from "express-async-handler";
 import * as categoryController from "./category.controller.js";
 import { multerMiddleHost } from "../../middlewares/multer.middleware.js";
 import { allowedExtensions } from "../../utils/allowedExtentions.js";
-import { endPointsRoles } from "./category.endpoint.js";
+import { endPointsRoles } from "./category.endpoint-rule.js";
 import { auth } from "../../middlewares/auth.middleware.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
 import {
@@ -42,5 +42,7 @@ router.get(
   "/getAllCategory",
   expressAsyncHandler(categoryController.getAllCategory)
 );
+
+router.get("/getAllData", expressAsyncHandler(categoryController.getAllData));
 
 export default router;

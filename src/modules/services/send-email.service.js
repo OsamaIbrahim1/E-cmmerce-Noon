@@ -26,7 +26,7 @@ const sendEmailService = async ({
     html: message, // html body
     attachments,
   });
-  console.log(info);
+  
   return info.accepted.length ? true : false;
 };
 

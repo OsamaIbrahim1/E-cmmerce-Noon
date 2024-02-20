@@ -51,11 +51,12 @@ export const signUp = async (req, res, next) => {
 
   // * hash password and check password is hashed
   const hashedPassword = bcryptjs.hashSync(password, +process.env.SALT_ROUNDS);
-  if (!hashedPassword)
+  if (!hashedPassword) {
     return next(new Error(`password not hashed`, { cause: 404 }));
+  }
 
   // * create new document in the database
-  const newUser = await User.create({
+  const objectUser = {
     username,
     email,
     password: hashedPassword,
@@ -63,7 +64,9 @@ export const signUp = async (req, res, next) => {
     addresses,
     role,
     age,
-  });
+  };
+  const newUser = await User.create(objectUser);
+  req.savedDocuments = { model: User, _id: newUser._id };
   if (!newUser) return next(new Error(`user not created`, { cause: 404 }));
 
   // * response success
@@ -156,15 +159,16 @@ export const updateUser = async (req, res, next) => {
 
   // * if user wonts to update email
   if (email) {
-    if (oldEmail === email)
+    if (oldEmail === email) {
       return next(
         new Error("this email is the same old email", { cause: 400 })
       );
+    }
     const checkEmail = await User.findOne({ email });
     if (checkEmail) {
       return next(
         new Error("Email already exists,please enter another one.", {
-          cause: 409,
+          cause: 400,
         })
       );
     }

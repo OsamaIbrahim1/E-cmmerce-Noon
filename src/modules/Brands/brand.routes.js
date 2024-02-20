@@ -26,7 +26,7 @@ router.post(
 router.delete(
   "/deleteBrand/:brandId",
   auth(endPointsRoles.ADD_Brand),
-  validationMiddleware(deleteBrandSchema),
+  validationMiddleware(deleteBrandSchema), 
   expressAsyncHandler(brandController.deleteBrand)
 );
 

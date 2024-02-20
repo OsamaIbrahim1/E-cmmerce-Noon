@@ -20,6 +20,7 @@ router.post(
   validationMiddleware(signUpSchema),
   expressAsyncHandler(authController.signUp)
 );
+
 router.get(
   "/verify-email",
   validationMiddleware(verifyEmailSchema),

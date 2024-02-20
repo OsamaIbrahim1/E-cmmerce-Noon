@@ -48,6 +48,9 @@ export const addSubCategory = async (req, res, next) => {
       folder: `${process.env.MAIN_FOLDER}/Categories/${category.folderId}/SubCategories/${folderId}`,
     });
 
+  // * rollback if event any error
+  req.folder = `${process.env.MAIN_FOLDER}/Categories/${category.folderId}/SubCategories/${folderId}`;
+
   // * generate the subCategory object
   const subCategoryObject = {
     name,
@@ -59,6 +62,8 @@ export const addSubCategory = async (req, res, next) => {
   };
 
   const subCategoryDoccument = await subCategory.create(subCategoryObject);
+  req.savedDocuments = { model: subCategory, _id: subCategoryDoccument._id };
+
   if (!subCategoryDoccument) {
     return next(new Error("SubCategory Not Created", { cause: 404 }));
   }

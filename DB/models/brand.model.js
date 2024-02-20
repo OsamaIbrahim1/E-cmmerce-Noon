@@ -10,7 +10,7 @@ const brandSchema = new mongoose.Schema(
     },
     folderId: { type: String, required: true, unique: true },
     addedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true }, // Admin
-    updatedBy: { type: mongoose.Types.ObjectId, ref: "User" }, 
+    updatedBy: { type: mongoose.Types.ObjectId, ref: "User" },
     subCategoryId: {
       type: mongoose.Types.ObjectId,
       ref: "SubCategory",
@@ -22,7 +22,13 @@ const brandSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
+
+brandSchema.virtual("Products", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "brandId",
+});
 
 export default mongoose.models.Brand || mongoose.model("Brand", brandSchema);
