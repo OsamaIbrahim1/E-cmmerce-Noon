@@ -1,5 +1,5 @@
-import { generalRules } from "../../utils/general.validation.rule.js";
 import Joi from "joi";
+import { generalRules } from "../../utils/general.validation.rule.js";
 
 export const addCategorySchema = {
   body: Joi.object({
@@ -11,7 +11,7 @@ export const addCategorySchema = {
 export const updateCategorySchema = {
   body: Joi.object({
     name: Joi.string().trim(),
-    oldPublicId: generalRules.dbId
+    oldPublicId: generalRules.dbId,
   }),
   params: Joi.object({ categoryId: generalRules.dbId }),
   headers: generalRules.headersRules,

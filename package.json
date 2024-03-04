@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node":"18.16.0"
+  },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +22,15 @@
     "express-async-handler": "^1.2.0",
     "joi": "^17.12.1",
     "jsonwebtoken": "^9.0.2",
+    "luxon": "^3.4.4",
+    "moment": "^2.30.1",
     "mongoose": "^8.1.1",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^5.0.5",
+    "node-schedule": "^2.1.1",
     "nodemailer": "^6.9.9",
     "nodemon": "^3.0.3",
+    "qrcode": "^1.5.3",
     "slugify": "^1.6.6"
   }
 }

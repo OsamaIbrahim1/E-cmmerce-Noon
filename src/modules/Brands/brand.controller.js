@@ -40,7 +40,7 @@ export const addBrand = async (req, res, next) => {
       new Error("Brand already exists for this subCategory.", { cause: 400 })
     );
   }
-  console.log(subCategory.categoryId._id.toString(), categoryId);
+
   // * check Category
   if (subCategory.categoryId._id.toString() !== categoryId) {
     return next(new Error("Category not found", { cause: 404 }));

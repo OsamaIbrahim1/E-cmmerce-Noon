@@ -127,7 +127,6 @@ export const updateSubCategory = async (req, res, next) => {
     if (!req.file) {
       return next(new Error(`please enter new image`, { cause: 400 }));
     }
-    console.log(checkSubCategory.categoryId.folderId);
 
     const newPublicId = oldPublicId.split(`${checkSubCategory.folderId}/`)[1];
     const { secure_url, public_id } =

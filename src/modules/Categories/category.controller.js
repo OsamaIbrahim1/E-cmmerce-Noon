@@ -138,7 +138,7 @@ export const updateCategory = async (req, res, next) => {
   // * success response
   res
     .status(200)
-    .json({ success: true, message: "Successfully   updated", category });
+    .json({ success: true, message: "Successfully updated", category });
 };
 
 //================================ delete category ================================//

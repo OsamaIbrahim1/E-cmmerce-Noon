@@ -2,8 +2,10 @@ import db_connection from "../DB/connection.js";
 import { globalResponse } from "./middlewares/global-response.middleware.js";
 import { rollbackSavedDocuments } from "./middlewares/rollback-saved-Documents.js";
 import { rollbackUploadedFiles } from "./middlewares/rollback-uploaded-files.middleware.js";
+import { gracefulShutdown } from "node-schedule";
 
 import * as routers from "./modules/index.routes.js";
+import { cronToChangeExpiredCoupons } from "./utils/crons.js";
 
 export const initiateApp = (app, express) => {
   const port = process.env.port;
@@ -16,9 +18,13 @@ export const initiateApp = (app, express) => {
   app.use("/brand", routers.brandRouter);
   app.use("/product", routers.productRouter);
   app.use("/cart", routers.cartRouter);
+  app.use("/coupon", routers.couponRouter);
+  app.use("/order", routers.orderRouter);
   app.use(globalResponse, rollbackUploadedFiles, rollbackSavedDocuments);
 
   db_connection();
+  gracefulShutdown();
+  cronToChangeExpiredCoupons();
   app.listen(port, () => {
     console.log(`app listening on ${port}`);
   });

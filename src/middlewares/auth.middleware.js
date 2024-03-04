@@ -15,12 +15,13 @@ export const auth = (accessRole) => {
       const decodedData = jwt.verify(token, process.env.JWT_SECRET_LOGIN);
       if (!decodedData || !decodedData.id)
         return next(new Error(`invalid token payload`, { cause: 400 }));
-      
+
       // check user
       const findUser = await User.findById(
         decodedData.id,
         "username email role"
-        );
+      );
+
       if (!findUser)
         return next(new Error(`please SignUp first`, { cause: 404 }));
 

@@ -7,18 +7,14 @@ import { allowedExtensions } from "../../utils/allowedExtentions.js";
 import { endPointsRoles } from "./category.endpoint-rule.js";
 import { auth } from "../../middlewares/auth.middleware.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
-import {
-  addCategorySchema,
-  deleteCategorySchema,
-  updateCategorySchema,
-} from "./category.validation-Schema.js";
+import * as validators from "./category.validation-Schema.js";
 
 const router = Router();
 
 router.post(
   "/addCategory",
   auth(endPointsRoles.ADD_CATEGORY),
-  validationMiddleware(addCategorySchema),
+  validationMiddleware(validators.addCategorySchema),
   multerMiddleHost({ extensions: allowedExtensions.images }).single("image"),
   expressAsyncHandler(categoryController.addCategory)
 );
@@ -26,7 +22,7 @@ router.post(
 router.put(
   "/updateCategory/:categoryId",
   auth(endPointsRoles.ADD_CATEGORY),
-  validationMiddleware(updateCategorySchema),
+  validationMiddleware(validators.updateCategorySchema),
   multerMiddleHost({ extensions: allowedExtensions.images }).single("image"),
   expressAsyncHandler(categoryController.updateCategory)
 );
@@ -34,7 +30,7 @@ router.put(
 router.delete(
   "/deleteCategory/:categoryId",
   auth(endPointsRoles.ADD_CATEGORY),
-  validationMiddleware(deleteCategorySchema),
+  validationMiddleware(validators.deleteCategorySchema),
   expressAsyncHandler(categoryController.deleteCategory)
 );
 

@@ -20,8 +20,7 @@ import { updateProductQuantity } from "./utils/update-product-quantity.js";
  */
 export const addProductToCart = async (req, res, next) => {
   const { _id } = req.authUser;
-  const { quantity } = req.body;
-  const { productId } = req.query;
+  const {productId, quantity } = req.body;
 
   /**
    * @check if the product exists and if it's available

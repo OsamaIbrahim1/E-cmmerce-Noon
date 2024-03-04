@@ -221,7 +221,7 @@ export const deleteProduct = async (req, res, next) => {
   const pathFolder = product.Images[0].public_id.split(
     `${product.folderId}/`
   )[0];
-  console.log(pathFolder + `${product.folderId}/`);
+  
   await cloudinaryConnection().api.delete_resources_by_prefix(
     pathFolder + `${product.folderId}/`
   );

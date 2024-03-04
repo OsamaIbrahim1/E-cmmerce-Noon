@@ -24,12 +24,13 @@ export const signUp = async (req, res, next) => {
 
   // * check if the user already exists in the database using the email
   const isEmailDuplicated = await User.findOne({ email });
-  if (isEmailDuplicated)
+  if (isEmailDuplicated) {
     return next(
       new Error(`Email already exists, Please try another email`, {
         cause: 409,
       })
     );
+  }
 
   // * create token for the user
   const usertoken = jwt.sign({ email }, process.env.JWT_SECRET_VERIFICATION, {
@@ -42,7 +43,7 @@ export const signUp = async (req, res, next) => {
     subject: "Email Verification",
     message: `
     <h2>Please click on this link to verify your email, yazezo</h2>
-    <a href="http://localhost:3000/auth/verify-email?token=${usertoken}">Verify Email</a>`,
+    <a href="${req.protocol}://${req.headers.host}/auth/verify-email?token=${usertoken}">Verify Email</a>`,
   });
   if (!isEmailSent)
     return next(
@@ -110,6 +111,7 @@ export const verifyEmail = async (req, res, next) => {
  * * check if password matched
  * * generate token for user
  * * update islogged in = true
+ * * response successfully
  */
 export const login = async (req, res, next) => {
   // * destructure data from body
@@ -117,6 +119,7 @@ export const login = async (req, res, next) => {
 
   // * check if email already exists
   const user = await User.findOne({ email, isEmailVerified: true });
+
   if (!user) {
     return next(new Error(`Invalid login credentials`, { cause: 404 }));
   }
@@ -215,7 +218,9 @@ export const deleteUser = async (req, res, next) => {
     return next(new Error("Category not deleted", { cause: 409 }));
   }
   // * response successfully
-  res.status(200).json({ message: "Successfully deleted", data: user });
+  res
+    .status(200)
+    .json({ success: true, message: "Successfully deleted", data: user });
 };
 
 //============================= get data user =============================//
@@ -231,7 +236,6 @@ export const getUserData = async (req, res, next) => {
   // * get user data
   const user = await User.findById(_id).select(
     "-password -isEmailVerified -_id -isloggedIn"
-    // "username email phoneNumbers addresses role age"
   );
   if (!user) return next(new Error("user not found", { cause: 404 }));
 

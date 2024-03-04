@@ -1,19 +1,11 @@
 import { Router } from "express";
 
-import * as productController from "./product.Controller.js";
+import * as productController from "./product.controller.js";
 import expressAsyncHandler from "express-async-handler";
-import { systemRoles } from "../../utils/system-role.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
 import { multerMiddleHost } from "../../middlewares/multer.middleware.js";
 import { allowedExtensions } from "../../utils/allowedExtentions.js";
-import {
-  addProductSchema,
-  deleteProductSchema,
-  getProductByIdSchema,
-  productsForTwoSpecificBrandsSchema,
-  searchWithAnyFieldSchema,
-  updateProductSchema,
-} from "./product.Validation-Schema.js";
+import * as validators from "./product.Validation-Schema.js";
 import { auth } from "../../middlewares/auth.middleware.js";
 import { endPointsRoles } from "./product.endpoints-rule.js";
 
@@ -23,14 +15,14 @@ router.post(
   "/addProduct",
   auth(endPointsRoles.ADD_PRODUCT),
   multerMiddleHost({ extensions: allowedExtensions.images }).array("image", 3),
-  validationMiddleware(addProductSchema),
+  validationMiddleware(validators.addProductSchema),
   expressAsyncHandler(productController.addProduct)
 );
 
 router.put(
   "/updateProduct",
   auth(endPointsRoles.UPDATE_PRODUCT),
-  validationMiddleware(updateProductSchema),
+  validationMiddleware(validators.updateProductSchema),
   multerMiddleHost({ extensions: allowedExtensions.images }).single("image"),
   expressAsyncHandler(productController.updateProduct)
 );
@@ -38,19 +30,19 @@ router.put(
 router.delete(
   "/deleteProduct",
   auth(endPointsRoles.DELETE_PRODUCT),
-  validationMiddleware(deleteProductSchema),
+  validationMiddleware(validators.deleteProductSchema),
   expressAsyncHandler(productController.deleteProduct)
 );
 
 router.get(
   "/getProductById",
-  validationMiddleware(getProductByIdSchema),
+  validationMiddleware(validators.getProductByIdSchema),
   expressAsyncHandler(productController.getProductById)
 );
 
 router.get(
   "/searchWithAnyField",
-  validationMiddleware(searchWithAnyFieldSchema),
+  validationMiddleware(validators.searchWithAnyFieldSchema),
   expressAsyncHandler(productController.searchWithAnyField)
 );
 
@@ -61,7 +53,7 @@ router.get(
 
 router.get(
   "/productsForTwoSpecificBrands",
-  validationMiddleware(productsForTwoSpecificBrandsSchema),
+  validationMiddleware(validators.productsForTwoSpecificBrandsSchema),
   expressAsyncHandler(productController.productsForTwoSpecificBrands)
 );
 
