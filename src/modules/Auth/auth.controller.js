@@ -6,6 +6,7 @@ import sendEmailService from "../services/send-email.service.js";
 import Category from "../../../DB/models/category.model.js";
 import SubCategories from "../../../DB/models/Sub-Category.model.js";
 import Brand from "../../../DB/models/brand.model.js";
+import generateUniqueString from "../../utils/generate-Unique-String.js";
 
 //============================= signUp =============================//
 /**
@@ -118,7 +119,11 @@ export const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   // * check if email already exists
-  const user = await User.findOne({ email, isEmailVerified: true });
+  const user = await User.findOne({
+    email,
+    isEmailVerified: true,
+    isDeleted: false,
+  });
 
   if (!user) {
     return next(new Error(`Invalid login credentials`, { cause: 404 }));
@@ -134,13 +139,14 @@ export const login = async (req, res, next) => {
 
   // * generate token for user
   const token = jwt.sign(
-    { email, id: user._id, isloggedIn: true },
+    { id: user._id, isloggedIn: true },
     process.env.JWT_SECRET_LOGIN,
     { expiresIn: "1d" }
   );
 
   // * update islogged in = true
   user.isloggedIn = true;
+  user.token = token;
   await user.save();
 
   // * response successfully
@@ -241,4 +247,168 @@ export const getUserData = async (req, res, next) => {
 
   // * response successfully
   res.status(200).json({ message: "user data", data: user });
+};
+
+//================================== Update password =========================//
+/**
+ * * destructuring data from req.headers and req.body
+ * * find account and compare password
+ * * hash new Password and check if hashed
+ * * update Password and check if updated
+ * * response success
+ */
+export const updatePassword = async (req, res, next) => {
+  // * destructuring data from req.body and req.headers
+  const { password, newPassword } = req.body;
+  const { _id } = req.authUser;
+
+  // * find account and compare password
+  const user = await User.findById(_id);
+  const passwordMatched = bcryptjs.compareSync(password, user.password);
+  if (!passwordMatched) {
+    return next(
+      new Error("password mismatch, Please Enter correct password", {
+        cause: 400,
+      })
+    );
+  }
+
+  // * hash new Password and check if hashed
+  const hashNewPassword = bcryptjs.hashSync(
+    newPassword,
+    +process.env.salts_number
+  );
+  if (!hashNewPassword)
+    return next(new Error("new password not hashed", { cause: 400 }));
+
+  // * update Password and check if updated
+  user.password = hashNewPassword;
+  user.save();
+
+  // * response success
+  res
+    .status(200)
+    .json({ success: true, message: "updated password", data: user });
+};
+
+//================================== soft Delete =========================//
+/**
+ * * destructure data from authUser
+ * * update isDeleted from false to true
+ * * response successfully
+ */
+export const softDelete = async (req, res, next) => {
+  // * destructure data from authUser
+  const { _id } = req.authUser;
+
+  // * update isDeleted from false to true
+  const user = await User.findByIdAndUpdate(_id, { isDeleted: true });
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "deleted successfully", data: user });
+};
+
+//==================================  Forget password =========================//
+/**
+ * * destructure data from body
+ * * get user by email
+ * * generate reset password code
+ * * hash code
+ * * generate token to reset password
+ * * send reset password email to the user and check if sent
+ * * saved changes
+ * * response successfully
+ */
+export const forgetPassword = async (req, res, next) => {
+  // * destructure data from body
+  const { email } = req.body;
+
+  // * get user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next("user not found", { cause: 404 });
+  }
+
+  // * generate reset password code
+  const code = generateUniqueString(6);
+
+  // * hash code
+  const hashCode = bcryptjs.hashSync(code, +process.env.SALT_ROUNDS);
+
+  // * generate token to reset password
+  const token = jwt.sign(
+    {
+      email,
+      forgetCode: hashCode,
+    },
+    process.env.RESET_Token,
+    { expiresIn: "1h" }
+  );
+
+  const resetPasswordLink = `${req.protocol}://${req.headers.host}/auth/resetPassword/${token}`;
+
+  // * send reset password email to the user and check if sent
+  const isEmailSent = await sendEmailService({
+    to: email,
+    subject: "Reset Password",
+    message: `
+    <h2>Please click on this link to reset password</h2>
+    <a href="${resetPasswordLink}">Verify Email</a>`,
+  });
+  if (!isEmailSent) {
+    return next(`Email is not sent,please try again later`, { cause: 409 });
+  }
+
+  // * saved changes
+  user.forgetCode = hashCode;
+  await user.save();
+
+  // * response successfully
+  res.status(200).json({ message: `code sent successfully`, user });
+};
+
+//==================================  reset password =========================//
+/**
+ * * destructure data from params
+ * * decoded token
+ * * get user by email and code
+ * * destructure data from body
+ * * hash new password
+ * * saved changes
+ * * response successfully
+ */
+export const resetPassword = async (req, res, next) => {
+  // * destructure data from params
+  const { token } = req.params;
+
+  // * decoded token
+  const decoded = jwt.verify(token, process.env.RESET_Token);
+
+  // * get user by email and code
+  const user = await User.findOne({
+    email: decoded?.email,
+    forgetCode: decoded?.forgetCode,
+  });
+  if (!user) {
+    return next("you already reset your password", { cause: 404 });
+  }
+
+  // * destructure data from body
+  const { newPassword } = req.body;
+
+  // * hash new password
+  const newPasswordHash = bcryptjs.hashSync(
+    newPassword,
+    +process.env.SALT_ROUNDS
+  );
+
+  // * saved changes
+  user.password = newPasswordHash;
+  user.forgetCode = null;
+  await user.save();
+
+  // * response successfully
+  res.status(200).json({ message: `password changed successfully`, user });
 };

@@ -2,7 +2,7 @@ import Cart from "../../../../DB/models/cart.model.js";
 
 /**
  * @param {String} userId
- * @returns  {Promise<Cart | null>}
+ * @returns  {Promise<Cart | null}
  * @description  Get the user's cart
  */
 

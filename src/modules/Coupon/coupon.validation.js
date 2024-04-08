@@ -20,3 +20,33 @@ export const addCouponSchema = {
     ),
   }),
 };
+export const getCouponByIdSchema = {
+  params: Joi.object({
+    couponId: generalRules.dbId,
+  }),
+};
+
+export const enableAndDesableCouponSchema = {
+  query: Joi.object({
+    couponId: generalRules.dbId,
+  }),
+  headers: generalRules.headersRules,
+};
+
+export const updateCouponsSchema = {
+  query: Joi.object({
+    couponId: generalRules.dbId,
+  }),
+  headers: generalRules.headersRules,
+  body: Joi.object({
+    couponAmount: Joi.number().min(1),
+    couponStatus: Joi.string().valid("valid", "expired"),
+    isFixed: Joi.boolean(),
+    isPercentage: Joi.boolean(),
+    fromDate: Joi.date()
+      .iso()
+      .greater(Date.now() - 24 * 60 * 60 * 1000),
+    toDate: Joi.date().iso().greater(Joi.ref("fromDate")),
+    couponCondition: Joi.string().valid("enabled", "disabled"),
+  }),
+};

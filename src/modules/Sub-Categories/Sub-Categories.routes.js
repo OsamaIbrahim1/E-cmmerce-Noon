@@ -7,18 +7,14 @@ import { allowedExtensions } from "../../utils/allowedExtentions.js";
 import { endPointsRoles } from "./endpoints.Sub-Categories.js";
 import { auth } from "../../middlewares/auth.middleware.js";
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
-import {
-  addSubCategorySchema,
-  updateSubCategorySchema,
-} from "./Sub-Categories.validation-Schema.js";
-import { deleteCategorySchema } from "../Categories/category.validation-Schema.js";
+import * as validators from "./Sub-Categories.validation-Schema.js";
 
 const router = Router();
 
 router.post(
   "/addSubCategory/:categoryId",
   auth(endPointsRoles.ADD_SUBCATEGORY),
-  validationMiddleware(addSubCategorySchema),
+  validationMiddleware(validators.addSubCategorySchema),
   multerMiddleHost({ extensions: allowedExtensions.images }).single("image"),
   expressAsyncHandler(subCategoryController.addSubCategory)
 );
@@ -26,7 +22,7 @@ router.post(
 router.put(
   "/updateSubCategory",
   auth(endPointsRoles.ADD_SUBCATEGORY),
-  validationMiddleware(updateSubCategorySchema),
+  validationMiddleware(validators.updateSubCategorySchema),
   multerMiddleHost({ extensions: allowedExtensions.images }).single("image"),
   expressAsyncHandler(subCategoryController.updateSubCategory)
 );
@@ -34,12 +30,32 @@ router.put(
 router.delete(
   "/deleteSubCategory",
   auth(endPointsRoles.ADD_SUBCATEGORY),
-  validationMiddleware(deleteCategorySchema),
+  validationMiddleware(validators.deleteSubCategorySchema),
   expressAsyncHandler(subCategoryController.deleteSubCategory)
 );
+
 router.get(
   "/getAllSubcategoriesWithBrands",
   expressAsyncHandler(subCategoryController.getAllSubcategoriesWithBrands)
+);
+
+router.get(
+  "/getCategoryById/:SubCategoryId",
+  auth(endPointsRoles.ALL_USERS),
+  validationMiddleware(validators.getSubCategoryByIdSchema),
+  expressAsyncHandler(subCategoryController.getSubCategoryById)
+);
+
+router.get(
+  "/getAllBrands/:subCategoryId",
+  auth(endPointsRoles.ALL_USERS),
+  validationMiddleware(validators.getAllBrandsSchema),
+  expressAsyncHandler(subCategoryController.getAllBrands)
+);
+
+router.get(
+  "/getAllSubCategoriesWithPagination",
+  expressAsyncHandler(subCategoryController.getAllSubCategoriesWithPagination)
 );
 
 export default router;

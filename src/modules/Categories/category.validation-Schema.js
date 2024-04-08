@@ -21,3 +21,18 @@ export const deleteCategorySchema = {
   params: Joi.object({ categoryId: generalRules.dbId }),
   headers: generalRules.headersRules,
 };
+
+export const getAllSubCategoriesSchema = {
+  query: Joi.object({ categoryId: generalRules.dbId }),
+  headers: generalRules.headersRules,
+};
+
+export const getCategoryByIdSchema = {
+  params: Joi.object({ categoryId: generalRules.dbId }),
+  headers: generalRules.headersRules,
+};
+
+export const getAllBrandForCategorySchema = {
+  params: Joi.object({ categoryId: generalRules.dbId }),
+  headers: generalRules.headersRules,
+};

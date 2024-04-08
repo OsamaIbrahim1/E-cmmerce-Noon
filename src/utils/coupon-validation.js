@@ -7,6 +7,11 @@ export async function applyCouponValidation(couponCode, userId) {
   const coupon = await Coupon.findOne({ couponCode });
   if (!coupon) return { message: `Coupon code is invalid.`, status: 400 };
 
+  // * check if coupon is disabled
+  if (coupon.couponCondition === "disabled") {
+    return { message: `this Coupon is disabled`, status: 400 };
+  }
+  
   // * couponStateus check
   if (
     coupon.couponStatus === "expired" ||

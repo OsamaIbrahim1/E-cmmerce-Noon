@@ -11,7 +11,7 @@ const router = Router();
 router.post(
   "/addProductToCart",
   auth(systemRoles.USER),
-  validationMiddleware(validators.addProductToCart),
+  validationMiddleware(validators.addProductToCartSchema),
   expressAsyncHandler(cartController.addProductToCart)
 );
 

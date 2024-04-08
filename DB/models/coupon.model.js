@@ -44,6 +44,25 @@ const couponSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    couponCondition: {
+      type: String,
+      enum: ["enabled", "disabled"],
+      default: "enabled",
+    },
+    disabledAt: {
+      type: String,
+    },
+    disabledBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    enabledBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    enabledAt: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -9,6 +9,20 @@ const categorySchema = new mongoose.Schema(
       public_id: { type: String, required: true, unique: true },
     },
     folderId: { type: String, required: true, unique: true },
+    disabledAt: {
+      type: String,
+    },
+    disabledBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    enabledBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    enabledAt: {
+      type: String,
+    },
     addedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true }, // Super Admin
     updatedBy: { type: mongoose.Types.ObjectId, ref: "User" },
   },

@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { generalRules } from "../../utils/general.validation.rule.js";
 
-export const addProductToCart = {
+export const addProductToCartSchema = {
   body: Joi.object({
     quantity: Joi.number().required(),
     productId: generalRules.dbId,

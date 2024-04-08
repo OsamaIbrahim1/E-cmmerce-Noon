@@ -4,6 +4,7 @@ import cloudinaryConnection from "../../utils/cloudinary.js";
 import generateUniqueString from "../../utils/generate-Unique-String.js";
 import SubCategories from "../../../DB/models/Sub-Category.model.js";
 import Brand from "../../../DB/models/brand.model.js";
+import { APIFeature } from "../../utils/api-features.js";
 
 //================================ add category ================================//
 /**
@@ -191,10 +192,14 @@ export const deleteCategory = async (req, res, next) => {
 
 //================================ get all category ================================//
 /**
+ * * destructure data from query
  * * get all category
  * * response successfully
  */
 export const getAllCategory = async (req, res, next) => {
+  // * destructure data from query
+  const { page, size, sort, ...search } = req.query;
+
   // * get all category with populate "subCategories" and populate "Brands"
   const categories = await Category.find().populate([
     {
@@ -225,4 +230,117 @@ export const getAllData = async (req, res, next) => {
 
   // * response successfully
   res.status(200).json({ success: true, message: "all data", date: allData });
+};
+
+//================================ Get all subCategories for specific category ================================//
+/**
+ * * destructure require data from query
+ * * check if category is already exists
+ * * get all subCategories
+ * * response successfully
+ */
+export const getAllSubCategories = async (req, res, next) => {
+  // * destructure require data from query
+  const { categoryId } = req.query;
+
+  // * check if category is already exists
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    return next({ message: "Category not found", cause: 404 });
+  }
+
+  // * get all subCategories
+  const subCategories = await SubCategories.find({ categoryId: category._id });
+  if (!subCategories.length) {
+    return next({
+      message: "subCategories not found for this Category",
+      cause: 404,
+    });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "get all subCategories successfully",
+    data: subCategories,
+  });
+};
+
+//================================ Get category By Id ================================//
+/**
+ * * destructure data from params
+ * * check if category exists
+ * * response successfully
+ */
+export const getCategoryById = async (req, res, next) => {
+  // * destructure data from params
+  const { categoryId } = req.params;
+
+  // * check if category exists
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    return next({ message: "Category not found", cause: 404 });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "Category already exists",
+    data: category,
+  });
+};
+
+//================================ Get all brands for Category ================================//
+/**
+ * * destructure data from params
+ * * check if category exists
+ * * check brands for category
+ * * response successfully
+ */
+export const getAllBrandForCategory = async (req, res, next) => {
+  // * destructure data from params
+  const { categoryId } = req.params;
+
+  // * check if category exists
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    return next({ message: "Category not found", cause: 404 });
+  }
+
+  // * check brands for category
+  const brands = await Brand.find({ categoryId });
+  if (!brands.length) {
+    return next({ message: "Brands not found for this Category", cause: 404 });
+  }
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "Brand for this Category", data: brands });
+};
+
+//================================= get All Category with pagination =================================//
+/**
+ * * destructure data from query
+ * * find data and paginate it
+ * * response successfully
+ */
+export const getAllCategoryWithPagination = async (req, res, next) => {
+  //  * destructure data from query
+  const { page, size, sort, ...search } = req.query;
+
+  // * find data and paginate it
+  const features = new APIFeature(req.query, Category.find())
+    .pagination({
+      page,
+      size,
+    })
+    .sort(sort);
+
+  const categories = await features.mongooseQuery;
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "get all categories", data: categories });
 };

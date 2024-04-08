@@ -8,7 +8,7 @@ import * as routers from "./modules/index.routes.js";
 import { cronToChangeExpiredCoupons } from "./utils/crons.js";
 
 export const initiateApp = (app, express) => {
-  const port = process.env.port;
+  const port = process.env.port || 3000;
 
   app.use(express.json());
 
@@ -20,6 +20,12 @@ export const initiateApp = (app, express) => {
   app.use("/cart", routers.cartRouter);
   app.use("/coupon", routers.couponRouter);
   app.use("/order", routers.orderRouter);
+  app.use("/review", routers.reviewRouter);
+
+  app.use("*", (req, res, next) => {
+    res.status(404).json({ message: "Not Found" });
+  });
+
   app.use(globalResponse, rollbackUploadedFiles, rollbackSavedDocuments);
 
   db_connection();

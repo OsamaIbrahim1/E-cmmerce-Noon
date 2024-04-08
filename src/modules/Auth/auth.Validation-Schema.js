@@ -51,3 +51,30 @@ export const deleteUserSchema = {
 export const getDataUserSchema = {
   headers: generalRules.headersRules,
 };
+
+export const updatePasswordSchema = {
+  body: Joi.object({
+    password: Joi.string().min(6).max(15).required(),
+    newPassword: Joi.string().min(6).max(15).required(),
+  }),
+  headers: generalRules.headersRules,
+};
+
+export const softDeleteSchema = {
+  headers: generalRules.headersRules,
+};
+
+export const forgetPasswordSchema = {
+  body: Joi.object({
+    email: Joi.string().trim().lowercase().required().email(),
+  }),
+};
+
+export const resetPasswordSchema = {
+  body: Joi.object({
+    newPassword: Joi.string().min(6).required(),
+  }),
+  params: Joi.object({
+    token: Joi.string().required(),
+  }),
+};

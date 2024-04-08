@@ -5,6 +5,7 @@ import Brand from "../../../DB/models/brand.model.js";
 import cloudinaryConnection from "../../utils/cloudinary.js";
 import generateUniqueString from "../../utils/generate-Unique-String.js";
 import Product from "../../../DB/models/product.model.js";
+import { APIFeature } from "../../utils/api-features.js";
 
 //===================================== add brand =====================================//
 /**
@@ -215,4 +216,30 @@ export const getBrands = async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "brands existing.", data: brands });
+};
+
+//================================= get All brand with pagination =================================//
+/**
+ * * destructure data from query
+ * * find data and paginate it
+ * * response successfully
+ */
+export const getAllBrandsWithPagination = async (req, res, next) => {
+  //  * destructure data from query
+  const { page, size, sort, ...search } = req.query;
+
+  // * find data and paginate it
+  const features = new APIFeature(req.query, Brand.find())
+    .pagination({
+      page,
+      size,
+    })
+    .sort(sort);
+
+  const brands = await features.mongooseQuery;
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "get all brands", data: brands });
 };

@@ -20,7 +20,7 @@ import { updateProductQuantity } from "./utils/update-product-quantity.js";
  */
 export const addProductToCart = async (req, res, next) => {
   const { _id } = req.authUser;
-  const {productId, quantity } = req.body;
+  const { productId, quantity } = req.body;
 
   /**
    * @check if the product exists and if it's available
@@ -59,6 +59,7 @@ export const addProductToCart = async (req, res, next) => {
     if (!added)
       return next({ message: "Product not added to cart", cause: 400 });
   }
+  
   // * response successfully
   res.status(201).json({
     success: true,

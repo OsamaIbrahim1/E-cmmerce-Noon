@@ -11,6 +11,7 @@ import * as validators from "./category.validation-Schema.js";
 
 const router = Router();
 
+
 router.post(
   "/addCategory",
   auth(endPointsRoles.ADD_CATEGORY),
@@ -40,5 +41,31 @@ router.get(
 );
 
 router.get("/getAllData", expressAsyncHandler(categoryController.getAllData));
+
+router.get(
+  "/getAllSubCategories",
+  auth(endPointsRoles.Get_All_SubCategories),
+  validationMiddleware(validators.getAllSubCategoriesSchema),
+  expressAsyncHandler(categoryController.getAllSubCategories)
+);
+
+router.get(
+  "/getCategoryById/:categoryId",
+  auth(endPointsRoles.ALL_USERS),
+  validationMiddleware(validators.getCategoryByIdSchema),
+  expressAsyncHandler(categoryController.getCategoryById)
+);
+
+router.get(
+  "/getAllBrandForCategory/:categoryId",
+  auth(endPointsRoles.ALL_USERS),
+  validationMiddleware(validators.getAllBrandForCategorySchema),
+  expressAsyncHandler(categoryController.getAllBrandForCategory)
+);
+
+router.get(
+  "/getAllCategoryWithPagination",
+  expressAsyncHandler(categoryController.getAllCategoryWithPagination)
+);
 
 export default router;

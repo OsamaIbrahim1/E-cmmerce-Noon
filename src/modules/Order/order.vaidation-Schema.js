@@ -35,3 +35,19 @@ export const orderIdSchema = {
   }),
   headers: generalRules.headersRules,
 };
+
+export const payWithStripeSchema = {
+  params: Joi.object({
+    orderId: generalRules.dbId,
+  }),
+  headers: generalRules.headersRules,
+};
+
+export const cancelOrderSchema = {
+  query: Joi.object({
+    orderId: generalRules.dbId,
+  }),
+  headers: generalRules.headersRules,
+};
+
+

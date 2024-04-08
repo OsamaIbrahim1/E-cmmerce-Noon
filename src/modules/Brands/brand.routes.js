@@ -36,4 +36,9 @@ router.put(
 
 router.get("/getBrands", expressAsyncHandler(brandController.getBrands));
 
+router.get(
+  "/getAllBrandsWithPagination",
+  expressAsyncHandler(brandController.getAllBrandsWithPagination)
+);
+
 export default router;

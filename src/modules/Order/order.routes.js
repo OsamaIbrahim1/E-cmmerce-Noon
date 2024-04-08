@@ -10,7 +10,7 @@ const router = Router();
 
 router.post(
   "/addOrder",
-  auth([systemRoles.USER]),
+  auth([systemRoles.USER, systemRoles.ADMIN]),
   validationMiddleware(orderValidators.addOrderSchema),
   expressAsyncHandler(orderController.addOrder)
 );
@@ -27,6 +27,30 @@ router.put(
   auth([systemRoles.USER]),
   validationMiddleware(orderValidators.orderIdSchema),
   expressAsyncHandler(orderController.orderDelivery)
+);
+
+router.post(
+  "/payWithStripe/:orderId",
+  auth([systemRoles.USER]),
+  validationMiddleware(orderValidators.payWithStripeSchema),
+  expressAsyncHandler(orderController.payWithStripe)
+);
+
+router.post(
+  "/webhook",
+  expressAsyncHandler(orderController.stripeWebhookLocal)
+);
+
+router.post(
+  "/refund/:orderId",
+  auth([systemRoles.SUPER_ADMIN, systemRoles.ADMIN]),
+  expressAsyncHandler(orderController.refundOrder)
+);
+router.post(
+  "/cancelOrder",
+  auth([systemRoles.USER]),
+  validationMiddleware(orderValidators.cancelOrderSchema),
+  expressAsyncHandler(orderController.cancelOrder)
 );
 
 export default router;

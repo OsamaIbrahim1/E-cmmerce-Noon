@@ -4,6 +4,8 @@ import Category from "../../../DB/models/category.model.js";
 import generateUniqueString from "../../utils/generate-Unique-String.js";
 import cloudinaryConnection from "../../utils/cloudinary.js";
 import Brand from "../../../DB/models/brand.model.js";
+import { APIFeature } from "../../utils/api-features.js";
+import Product from "../../../DB/models/product.model.js";
 
 // =================================== add subCategory ===================================//
 /**
@@ -156,6 +158,7 @@ export const updateSubCategory = async (req, res, next) => {
  * * desrtucture data from authUser and query
  * * find and delete subCategory
  * * delete subCategory's brand
+ * * delete subCategory's Product
  * * delete image and folder of image category
  * * response successfully
  */
@@ -175,6 +178,10 @@ export const deleteSubCategory = async (req, res, next) => {
   // * delete subCategory's brand
   const deleteBrand = await Brand.deleteMany({ subCategoryId });
   if (!deleteBrand) return next(new Error("Brand not found", { cause: 400 }));
+  
+  // * delete subCategory's Product
+  const deleteProduct = await Product.deleteMany({ subCategoryId });
+  if (!deleteProduct) return next(new Error("Product not found", { cause: 400 }));
 
   // * delete image and folder of image category
   await cloudinaryConnection().api.delete_resources_by_prefix(
@@ -208,4 +215,92 @@ export const getAllSubcategoriesWithBrands = async (req, res, next) => {
     message: "found all categories successfully",
     allCategories,
   });
+};
+
+//================================ Get SubCategory By Id ================================//
+/**
+ * * destructure data from params
+ * * check if SubCategory exists
+ * * response successfully
+ */
+export const getSubCategoryById = async (req, res, next) => {
+  // * destructure data from params
+  const { SubCategoryId } = req.params;
+
+  // * check if category exists
+  const SubCategory = await subCategory.findById(SubCategoryId);
+  if (!SubCategory) {
+    return next({ message: "SubCategory not found", cause: 404 });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "Category already exists",
+    data: SubCategory,
+  });
+};
+
+//================================ Get all brands for specific subCategory ================================//
+/**
+ * * destructure data from params
+ * * check if subCategory already exists
+ * * get brands for subCategory
+ * * response successfully
+ */
+export const getAllBrands = async (req, res, next) => {
+  // * destructure data from params
+  const { subCategoryId } = req.params;
+
+  // * check if subCategory already exists
+  const SubCategory = await subCategory.findById(subCategoryId);
+  if (!SubCategory) {
+    return next({ message: "subCategory not found", cause: 404 });
+  }
+  console.log("object");
+  // * get brands for subCategory
+  const brands = await Brand.find({ subCategoryId });
+  if (!brands.length) {
+    return next({
+      message: "brands not found for this subCategory",
+      cause: 404,
+    });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "all brands for this subCategory",
+    data: brands,
+  });
+};
+
+//================================= get All SubCategories with pagination =================================//
+/**
+ * * destructure data from query
+ * * find data and paginate it
+ * * response successfully
+ */
+export const getAllSubCategoriesWithPagination = async (req, res, next) => {
+  //  * destructure data from query
+  const { page, size, sort, ...search } = req.query;
+
+  // * find data and paginate it
+  const features = new APIFeature(req.query, subCategory.find())
+    .pagination({
+      page,
+      size,
+    })
+    .sort(sort);
+
+  const subCategories = await features.mongooseQuery;
+
+  // * response successfully
+  res
+    .status(200)
+    .json({
+      success: true,
+      message: "get all subcategories",
+      data: subCategories,
+    });
 };

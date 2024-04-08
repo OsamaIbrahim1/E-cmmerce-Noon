@@ -221,7 +221,7 @@ export const deleteProduct = async (req, res, next) => {
   const pathFolder = product.Images[0].public_id.split(
     `${product.folderId}/`
   )[0];
-  
+
   await cloudinaryConnection().api.delete_resources_by_prefix(
     pathFolder + `${product.folderId}/`
   );
@@ -251,7 +251,11 @@ export const getProductById = async (req, res, next) => {
   const { productId } = req.query;
 
   // * check if product is existing
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).populate([
+    {
+      path: "Reviews",
+    },
+  ]);
   if (!product) {
     return next("Product not found", { cause: 404 });
   }
