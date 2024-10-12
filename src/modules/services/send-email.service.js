@@ -20,13 +20,13 @@ const sendEmailService = async ({
     },
   });
   const info = await transporter.sendMail({
-    from: `"Fred Foo 👻" <${process.env.EMAIL}>`, // sender address
-    to, // list of receivers
-    subject, // Subject line
-    html: message, // html body
+    from: `"Fred Foo 👻" <${process.env.EMAIL}>`,
+    to,
+    subject,
+    html: message,
     attachments,
   });
-  
+
   return info.accepted.length ? true : false;
 };
 

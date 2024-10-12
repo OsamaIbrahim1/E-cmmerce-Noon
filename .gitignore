@@ -3,3 +3,4 @@ node_modules
 
 # Ignore .env file
 config/dev.config.env
+.vercel

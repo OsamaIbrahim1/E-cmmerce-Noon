@@ -10,6 +10,7 @@ export const auth = (accessRole) => {
 
       if (!accesstoken.startsWith(process.env.TOKEN_PREFIX))
         return next(new Error(`invalid token prefix`, { cause: 400 }));
+      
       const token = accesstoken.split(process.env.TOKEN_PREFIX)[1];
       try {
         const decodedData = jwt.verify(token, process.env.JWT_SECRET_LOGIN);

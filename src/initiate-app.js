@@ -8,7 +8,7 @@ import * as routers from "./modules/index.routes.js";
 import { cronToChangeExpiredCoupons } from "./utils/crons.js";
 
 export const initiateApp = (app, express) => {
-  const port = process.env.port || 3000;
+  const port = +process.env.port || 3000;
 
   app.use(express.json());
 

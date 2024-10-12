@@ -31,7 +31,6 @@ export const addReview = async (req, res, next) => {
     return next("you already rated this product", { cause: 400 });
   }
 
-  console.log(rateproduct);
   // * review data
   const { reviewRate, reviewComment } = req.body;
   const reviewObj = {

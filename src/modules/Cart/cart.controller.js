@@ -22,9 +22,7 @@ export const addProductToCart = async (req, res, next) => {
   const { _id } = req.authUser;
   const { productId, quantity } = req.body;
 
-  /**
-   * @check if the product exists and if it's available
-   */
+  // * check if the product exists and if it's available
   const product = await checkProductAvailability(productId, quantity);
   if (!product) {
     return next({
@@ -53,13 +51,14 @@ export const addProductToCart = async (req, res, next) => {
    * @returns The cart state after modifying its products array to reflect the updated quantities and subtotals.
    * @check if the returned value is null, then the product is not found in the cart and we will add it.
    */
+  console.log("userCart: ", userCart);
   const isUpdated = await updateProductQuantity(userCart, productId, quantity);
   if (!isUpdated) {
     const added = await pushNewProduct(userCart, product, quantity);
     if (!added)
       return next({ message: "Product not added to cart", cause: 400 });
   }
-  
+
   // * response successfully
   res.status(201).json({
     success: true,

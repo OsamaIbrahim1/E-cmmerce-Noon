@@ -16,7 +16,7 @@ export const addProductSchema = {
     brandId: generalRules.dbId,
   }),
   headers: generalRules.headersRules,
-};
+}; 
 
 export const updateProductSchema = {
   body: Joi.object({

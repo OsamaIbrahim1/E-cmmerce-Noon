@@ -148,6 +148,7 @@ export const addOrder = async (req, res, next) => {
   // };
 
   // await createInvoice(orderInvoice,`${orderCode}.pdf`)
+
   // * response successfully
   res.status(201).json({
     success: true,
