@@ -49,7 +49,7 @@ export const deleteUserSchema = {
 };
 
 export const getDataUserSchema = {
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const updatePasswordSchema = {
