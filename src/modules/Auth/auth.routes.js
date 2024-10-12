@@ -30,7 +30,7 @@ router.post(
 router.put(
   "/update",
   auth(endPointsRoles.ALL_USERS),
-  // validationMiddleware(validators.updateUserSchema),
+  validationMiddleware(validators.updateUserSchema),
   expressAsyncHandler(authController.updateUser)
 );
 

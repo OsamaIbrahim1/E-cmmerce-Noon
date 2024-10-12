@@ -41,15 +41,6 @@ export const updateUserSchema = {
       .default(systemRoles.USER),
     age: Joi.number().min(18).max(100),
   }),
-  headers: generalRules.headersRules,
-};
-
-export const deleteUserSchema = {
-  headers: generalRules.headersRules,
-};
-
-export const getDataUserSchema = {
-  headers: generalRules.hostHeaderRules,
 };
 
 export const updatePasswordSchema = {
@@ -57,12 +48,8 @@ export const updatePasswordSchema = {
     password: Joi.string().min(6).max(15).required(),
     newPassword: Joi.string().min(6).max(15).required(),
   }),
-  headers: generalRules.headersRules,
 };
 
-export const softDeleteSchema = {
-  headers: generalRules.headersRules,
-};
 
 export const forgetPasswordSchema = {
   body: Joi.object({
