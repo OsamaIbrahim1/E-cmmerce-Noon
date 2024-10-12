@@ -5,7 +5,7 @@ export const addCategorySchema = {
   body: Joi.object({
     name: Joi.string().trim(),
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const updateCategorySchema = {
@@ -14,25 +14,25 @@ export const updateCategorySchema = {
     oldPublicId: generalRules.dbId,
   }),
   params: Joi.object({ categoryId: generalRules.dbId }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const deleteCategorySchema = {
   params: Joi.object({ categoryId: generalRules.dbId }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const getAllSubCategoriesSchema = {
   query: Joi.object({ categoryId: generalRules.dbId }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const getCategoryByIdSchema = {
   params: Joi.object({ categoryId: generalRules.dbId }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const getAllBrandForCategorySchema = {
   params: Joi.object({ categoryId: generalRules.dbId }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };

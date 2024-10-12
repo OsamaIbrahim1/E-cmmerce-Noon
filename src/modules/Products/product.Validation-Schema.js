@@ -15,7 +15,7 @@ export const addProductSchema = {
     subCategoryId: generalRules.dbId,
     brandId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 }; 
 
 export const updateProductSchema = {
@@ -37,14 +37,14 @@ export const updateProductSchema = {
   query: Joi.object({
     productId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const deleteProductSchema = {
   query: Joi.object({
     productId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 export const getProductByIdSchema = {
   query: Joi.object({

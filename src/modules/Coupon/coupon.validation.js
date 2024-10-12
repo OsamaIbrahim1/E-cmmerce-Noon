@@ -30,14 +30,14 @@ export const enableAndDesableCouponSchema = {
   query: Joi.object({
     couponId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const updateCouponsSchema = {
   query: Joi.object({
     couponId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
   body: Joi.object({
     couponAmount: Joi.number().min(1),
     couponStatus: Joi.string().valid("valid", "expired"),

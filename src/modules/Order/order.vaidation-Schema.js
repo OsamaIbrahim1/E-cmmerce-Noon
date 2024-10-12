@@ -13,7 +13,7 @@ export const addOrderSchema = {
     postalCode: Joi.string().required(),
     country: Joi.string().required(),
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const convertCartToOrderSchema = {
@@ -26,28 +26,28 @@ export const convertCartToOrderSchema = {
     postalCode: Joi.string().required(),
     country: Joi.string().required(),
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const orderIdSchema = {
   params: Joi.object({
     orderId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const payWithStripeSchema = {
   params: Joi.object({
     orderId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 export const cancelOrderSchema = {
   query: Joi.object({
     orderId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // // headers: generalRules.headersRules,
 };
 
 

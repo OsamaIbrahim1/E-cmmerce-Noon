@@ -9,13 +9,13 @@ export const addBrandSchema = {
     categoryId: generalRules.dbId,
     subCategoryId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 export const deleteBrandSchema = {
   params: Joi.object({
     brandId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const updateBrandSchema = {
@@ -26,5 +26,5 @@ export const updateBrandSchema = {
   query: Joi.object({
     brandId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };

@@ -6,12 +6,12 @@ export const addProductToCartSchema = {
     quantity: Joi.number().required(),
     productId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
 
 export const removeFromCartSchema = {
   params: Joi.object({
     productId: generalRules.dbId,
   }),
-  headers: generalRules.headersRules,
+  // headers: generalRules.headersRules,
 };
