@@ -37,14 +37,12 @@ router.put(
 router.delete(
   "/delete",
   auth(endPointsRoles.ALL_USERS),
-  validationMiddleware(validators.deleteUserSchema),
   expressAsyncHandler(authController.deleteUser)
 );
 
 router.get(
   "/getUserData",
   auth(endPointsRoles.ALL_USERS),
-  validationMiddleware(validators.deleteUserSchema),
   expressAsyncHandler(authController.getUserData)
 );
 
