@@ -46,10 +46,15 @@ router.get(
   expressAsyncHandler(productController.searchWithAnyField)
 );
 
-router.get("/getProduct", expressAsyncHandler(productController.getProducts));
+router.get(
+  "/getProduct",
+  auth(endPointsRoles.GET_PRODUCTS),
+  expressAsyncHandler(productController.getProducts)
+);
 
 router.get(
   "/getAllProduct",
+  auth(endPointsRoles.GET_PRODUCTS),
   expressAsyncHandler(productController.getAllProducts)
 );
 
