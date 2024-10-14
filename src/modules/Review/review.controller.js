@@ -62,7 +62,7 @@ export const addReview = async (req, res, next) => {
   // * response successfully
   res
     .status(201)
-    .json({ message: "Review successfully created", data: review });
+    .json({success:true, message: "Review successfully created", data: review });
 };
 
 //===================================== delete review ===================================//

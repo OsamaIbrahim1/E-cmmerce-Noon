@@ -150,7 +150,11 @@ export const login = async (req, res, next) => {
   await user.save();
 
   // * response successfully
-  res.status(200).json({ message: "logged in successfully", data: { token } });
+  res.status(200).json({
+    success: true,
+    message: "logged in successfully",
+    data: { token },
+  });
 };
 
 //============================= update user =============================//
@@ -192,7 +196,11 @@ export const updateUser = async (req, res, next) => {
   if (!userUpdated) return next(new Error("user not updated", { cause: 409 }));
 
   // * response successfully
-  res.status(200).json({ message: "updated successfully", userUpdated });
+  res.status(200).json({
+    success: true,
+    message: "updated successfully",
+    userUpdated,
+  });
 };
 
 //============================= delete user =============================//
@@ -246,7 +254,7 @@ export const getUserData = async (req, res, next) => {
   if (!user) return next(new Error("user not found", { cause: 404 }));
 
   // * response successfully
-  res.status(200).json({ message: "user data", data: user });
+  res.status(200).json({ success: true, message: "user data", data: user });
 };
 
 //================================== Update password =========================//
@@ -366,7 +374,9 @@ export const forgetPassword = async (req, res, next) => {
   await user.save();
 
   // * response successfully
-  res.status(200).json({ message: `code sent successfully`, user });
+  res
+    .status(200)
+    .json({ success: true, message: `code sent successfully`, user });
 };
 
 //==================================  reset password =========================//
@@ -410,5 +420,7 @@ export const resetPassword = async (req, res, next) => {
   await user.save();
 
   // * response successfully
-  res.status(200).json({ message: `password changed successfully`, user });
+  res
+    .status(200)
+    .json({ success: true, message: `password changed successfully`, user });
 };

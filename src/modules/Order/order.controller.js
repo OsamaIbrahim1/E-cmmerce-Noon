@@ -409,7 +409,7 @@ export const stripeWebhookLocal = async (req, res, next) => {
 
   await confirmedOrder.save();
 
-  res.status(200).json({ message: "webhook received" });
+  res.status(200).json({ success: true, message: "webhook received" });
 };
 
 export const refundOrder = async (req, res, next) => {
@@ -432,7 +432,11 @@ export const refundOrder = async (req, res, next) => {
 
   res
     .status(200)
-    .json({ message: "Order refunded successfully", order: refund });
+    .json({
+      success: true,
+      message: "Order refunded successfully",
+      order: refund,
+    });
 };
 
 //================================= Cancel order within  1 day after create the order  API =================================//
