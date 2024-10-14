@@ -23,6 +23,9 @@ export const signUp = async (req, res, next) => {
   const { username, email, password, phoneNumbers, addresses, role, age } =
     req.body;
 
+  let phoneNumbersArray = [];
+  let addressesArray = [];
+
   // * check if the user already exists in the database using the email
   const isEmailDuplicated = await User.findOne({ email });
   if (isEmailDuplicated) {
@@ -57,13 +60,16 @@ export const signUp = async (req, res, next) => {
     return next(new Error(`password not hashed`, { cause: 404 }));
   }
 
+  phoneNumbersArray.push(phoneNumbers);
+  addressesArray.push(addresses);
+  
   // * create new document in the database
   const objectUser = {
     username,
     email,
     password: hashedPassword,
-    phoneNumbers,
-    addresses,
+    phoneNumbers: phoneNumbersArray,
+    addresses: addressesArray,
     role,
     age,
   };
