@@ -20,7 +20,7 @@ export const validationMiddleware = (schema) => {
     }
     if (validationErrorArr.length)
       return res.status(400).json({
-        err_msg: "validation error",
+        error_msg: "validation error",
         errors: validationErrorArr.map((ele) => ele.message),
       });
     next();
