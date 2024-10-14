@@ -46,6 +46,8 @@ router.get(
   expressAsyncHandler(productController.searchWithAnyField)
 );
 
+router.get("/getProduct", expressAsyncHandler(productController.getProducts));
+
 router.get(
   "/getAllProduct",
   expressAsyncHandler(productController.getAllProducts)

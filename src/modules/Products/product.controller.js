@@ -300,6 +300,21 @@ export const searchWithAnyField = async (req, res, next) => {
   });
 };
 
+//================================= get All product  =================================//
+/**
+ * * get all products
+ * * response successfully
+ */
+export const getProducts = async (req, res, next) => {
+  // * get all products
+  const products = await Product.find();
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "get all products", data: products });
+};
+
 //================================= get All product with pagination =================================//
 /**
  * * destructure data from query
