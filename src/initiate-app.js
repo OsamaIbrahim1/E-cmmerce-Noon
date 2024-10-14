@@ -3,7 +3,7 @@ import { globalResponse } from "./middlewares/global-response.middleware.js";
 import { rollbackSavedDocuments } from "./middlewares/rollback-saved-Documents.js";
 import { rollbackUploadedFiles } from "./middlewares/rollback-uploaded-files.middleware.js";
 import { gracefulShutdown } from "node-schedule";
-
+import cors from "cors";
 import * as routers from "./modules/index.routes.js";
 import { cronToChangeExpiredCoupons } from "./utils/crons.js";
 
@@ -11,6 +11,10 @@ export const initiateApp = (app, express) => {
   const port = +process.env.port || 3000;
 
   app.use(express.json());
+
+  app.use(
+    cors({ origin: "http://localhost:3000", methods: "GET,POST,PUT,DELETE" })
+  );
 
   app.use("/auth", routers.userRouter);
   app.use("/category", routers.categoryRouter);
