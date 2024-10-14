@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
-    phoneNumbers: [{ type: String, required: true }],
-    addresses: [{ type: String, required: true }],
+    phoneNumber: { type: String, required: true },
+    address: { type: String, required: true },
     role: {
       type: String,
       enum: Object.values(systemRoles),

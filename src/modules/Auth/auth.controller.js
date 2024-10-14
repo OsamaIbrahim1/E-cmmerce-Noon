@@ -20,11 +20,8 @@ import generateUniqueString from "../../utils/generate-Unique-String.js";
  */
 export const signUp = async (req, res, next) => {
   // * destructure the required data from the request body
-  const { username, email, password, phoneNumbers, addresses, role, age } =
+  const { username, email, password, phoneNumber, address, role, age } =
     req.body;
-
-  let phoneNumbersArray = [];
-  let addressesArray = [];
 
   // * check if the user already exists in the database using the email
   const isEmailDuplicated = await User.findOne({ email });
@@ -60,16 +57,13 @@ export const signUp = async (req, res, next) => {
     return next(new Error(`password not hashed`, { cause: 404 }));
   }
 
-  phoneNumbersArray.push(phoneNumbers);
-  addressesArray.push(addresses);
-  
   // * create new document in the database
   const objectUser = {
     username,
     email,
     password: hashedPassword,
-    phoneNumbers: phoneNumbersArray,
-    addresses: addressesArray,
+    phoneNumber,
+    address,
     role,
     age,
   };
@@ -173,7 +167,7 @@ export const login = async (req, res, next) => {
  */
 export const updateUser = async (req, res, next) => {
   // * destructure the required data from the request body and request authUser
-  const { username, email, phoneNumbers, addresses, role, age } = req.body;
+  const { username, email, phoneNumber, address, role, age } = req.body;
   const { _id, oldEmail } = req.authUser;
 
   // * if user wonts to update email
@@ -196,7 +190,7 @@ export const updateUser = async (req, res, next) => {
   // * update user and check if updated successfully
   const userUpdated = await User.findByIdAndUpdate(
     { _id },
-    { username, email, phoneNumbers, addresses, role, age },
+    { username, email, phoneNumber, address, role, age },
     { new: true }
   );
   if (!userUpdated) return next(new Error("user not updated", { cause: 409 }));

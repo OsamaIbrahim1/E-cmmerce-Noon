@@ -7,8 +7,8 @@ export const signUpSchema = {
     username: Joi.string().min(3).max(20).trim().lowercase().required(),
     email: Joi.string().trim().lowercase().required().email(),
     password: Joi.string().min(6).required(),
-    phoneNumbers: Joi.array().items(Joi.string().min(11).max(20).required()),
-    addresses: Joi.array().items(Joi.string().required()),
+    phoneNumber: Joi.string().min(11).max(20).required(),
+    address: Joi.string().required(),
     role: Joi.string()
       .valid(systemRoles.ADMIN, systemRoles.USER, systemRoles.SUPER_ADMIN)
       .default(systemRoles.USER),
@@ -49,7 +49,6 @@ export const updatePasswordSchema = {
     newPassword: Joi.string().min(6).max(15).required(),
   }),
 };
-
 
 export const forgetPasswordSchema = {
   body: Joi.object({
