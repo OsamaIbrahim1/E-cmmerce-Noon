@@ -11,7 +11,6 @@ import * as validators from "./category.validation-Schema.js";
 
 const router = Router();
 
-
 router.post(
   "/addCategory",
   auth(endPointsRoles.ADD_CATEGORY),
@@ -37,6 +36,7 @@ router.delete(
 
 router.get(
   "/getAllCategory",
+  auth(endPointsRoles.ALL_USERS),
   expressAsyncHandler(categoryController.getAllCategory)
 );
 
