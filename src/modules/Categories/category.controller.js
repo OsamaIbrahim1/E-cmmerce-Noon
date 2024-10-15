@@ -211,7 +211,7 @@ export const getAllCategory = async (req, res, next) => {
   // * response successfully
   res
     .status(200)
-    .json({ success: true, message: "categories found", date: categories });
+    .json({ success: true, message: "categories found", data: categories });
 };
 
 //============================== Get all  categories with subCategories with brands with products  =================================//
