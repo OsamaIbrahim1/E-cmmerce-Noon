@@ -35,7 +35,7 @@ router.delete(
 );
 
 router.get(
-  "/getProductById",
+  "/getProductById/:productId",
   validationMiddleware(validators.getProductByIdSchema),
   expressAsyncHandler(productController.getProductById)
 );

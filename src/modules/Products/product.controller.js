@@ -242,13 +242,13 @@ export const deleteProduct = async (req, res, next) => {
 
 //================================= Get product by id =================================//
 /**
- * * destructure data from query
+ * * destructure data from params
  * * check if product is existing
  * * response successfully
  */
 export const getProductById = async (req, res, next) => {
-  // * destructure data from query
-  const { productId } = req.query;
+  // * destructure data from params
+  const { productId } = req.params;
 
   // * check if product is existing
   const product = await Product.findById(productId).populate([
