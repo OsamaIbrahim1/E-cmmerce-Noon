@@ -34,10 +34,15 @@ router.put(
   expressAsyncHandler(brandController.updateBrand)
 );
 
-router.get("/getBrands", expressAsyncHandler(brandController.getBrands));
+router.get(
+  "/getBrands",
+  auth(endPointsRoles.ALL_USERS),
+  expressAsyncHandler(brandController.getBrands)
+);
 
 router.get(
   "/getAllBrandsWithPagination",
+  auth(endPointsRoles.ALL_USERS),
   expressAsyncHandler(brandController.getAllBrandsWithPagination)
 );
 

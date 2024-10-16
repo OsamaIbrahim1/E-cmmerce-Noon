@@ -39,6 +39,7 @@ router.get(
   auth(endPointsRoles.ALL_USERS),
   expressAsyncHandler(categoryController.getCategories)
 );
+
 router.get(
   "/getAllCategoryWithSubCategoryWithBrand",
   auth(endPointsRoles.ALL_USERS),
