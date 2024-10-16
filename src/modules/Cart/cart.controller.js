@@ -110,3 +110,27 @@ export const removeFromCart = async (req, res, next) => {
     data: newCart,
   });
 };
+
+//========================= get user cart =========================//
+/**
+ * * destructuring the userId from authUser
+ * * get the user's cart
+ * * response successfully
+ */
+export const getCartData = async (req, res, next) => {
+  // * destructure data from authUser
+  const { _id:userId } = req.authUser;
+
+  // * get the user's cart
+  const userCart = await Cart.findOne({ userId });
+  if (!userCart) {
+    return next(`Cart not found`, { cause: 404 });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "user cart",
+    data: userCart,
+  });
+};

@@ -22,4 +22,10 @@ router.put(
   expressAsyncHandler(cartController.removeFromCart)
 );
 
+router.get(
+  "/getCartData",
+  auth(systemRoles.USER),
+  expressAsyncHandler(cartController.getCartData)
+);
+
 export default router;

@@ -13,5 +13,4 @@ export const removeFromCartSchema = {
   params: Joi.object({
     productId: generalRules.dbId,
   }),
-  // headers: generalRules.headersRules,
 };
