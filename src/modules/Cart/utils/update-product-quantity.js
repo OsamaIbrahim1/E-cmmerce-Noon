@@ -20,7 +20,9 @@ export async function updateProductQuantity(cart, productId, quantity) {
   cart?.products.forEach((product) => {
     if (product.productId.toString() === productId) {
       product.quantity = quantity;
-      product.finalPrice = product.basePrice * quantity;
+
+      product.finalPrice =
+        ((product.basePrice * (100 - product.discount)) / 100) * quantity;
     }
   });
 

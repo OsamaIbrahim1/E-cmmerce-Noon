@@ -40,7 +40,7 @@ export const addProductToCart = async (req, res, next) => {
    */
   if (!userCart) {
     const newCart = await addCart(_id, product, quantity);
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Cart created successfully",
       data: newCart,
@@ -51,7 +51,6 @@ export const addProductToCart = async (req, res, next) => {
    * @returns The cart state after modifying its products array to reflect the updated quantities and subtotals.
    * @check if the returned value is null, then the product is not found in the cart and we will add it.
    */
-  console.log("userCart: ", userCart);
   const isUpdated = await updateProductQuantity(userCart, productId, quantity);
   if (!isUpdated) {
     const added = await pushNewProduct(userCart, product, quantity);

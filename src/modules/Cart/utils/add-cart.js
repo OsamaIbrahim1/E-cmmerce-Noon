@@ -8,14 +8,16 @@ import Cart from "../../../../DB/models/cart.model.js";
  * @description add user's cart in the database
  */
 export async function addCart(userId, product, quantity) {
+  console.log(product);
   const cartObj = {
     userId,
     products: [
       {
         productId: product._id,
         quantity,
-        basePrice: product.appliedPrice,
+        basePrice: product.basePrice,
         title: product.title,
+        discount: product.discount,
         finalPrice: product.appliedPrice * quantity,
       },
     ],
