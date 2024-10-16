@@ -35,9 +35,14 @@ router.delete(
 );
 
 router.get(
-  "/getAllCategory",
+  "/categories",
   auth(endPointsRoles.ALL_USERS),
-  expressAsyncHandler(categoryController.getAllCategory)
+  expressAsyncHandler(categoryController.getCategories)
+);
+router.get(
+  "/getAllCategoryWithSubCategoryWithBrand",
+  auth(endPointsRoles.ALL_USERS),
+  expressAsyncHandler(categoryController.getAllCategoryWithSubCategoryWithBrand)
 );
 
 router.get("/getAllData", expressAsyncHandler(categoryController.getAllData));

@@ -190,13 +190,28 @@ export const deleteCategory = async (req, res, next) => {
   });
 };
 
-//================================ get all category ================================//
+//================================ get all categories ================================//
 /**
- * * destructure data from query
  * * get all category
  * * response successfully
  */
-export const getAllCategory = async (req, res, next) => {
+export const getCategories = async (req, res, next) => {
+  // * get all categories
+  const categories = await Category.find();
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "categories found", data: categories });
+};
+
+//================================ get all category with subCategories with Brands ================================//
+/**
+ * * destructure data from query
+ *  * get all category with populate "subCategories" and populate "Brands"
+ * * response successfully
+ */
+export const getAllCategoryWithSubCategoryWithBrand = async (req, res, next) => {
   // * destructure data from query
   const { page, size, sort, ...search } = req.query;
 
