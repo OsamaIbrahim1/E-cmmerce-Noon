@@ -46,11 +46,19 @@ router.post(
   auth([systemRoles.SUPER_ADMIN, systemRoles.ADMIN]),
   expressAsyncHandler(orderController.refundOrder)
 );
+
 router.post(
   "/cancelOrder",
   auth([systemRoles.USER]),
   validationMiddleware(orderValidators.cancelOrderSchema),
   expressAsyncHandler(orderController.cancelOrder)
+);
+
+router.get(
+  "/getOrderById/:orderId",
+  auth([systemRoles.USER]),
+  validationMiddleware(orderValidators.cancelOrderSchema),
+  expressAsyncHandler(orderController.getOrderById)
 );
 
 export default router;

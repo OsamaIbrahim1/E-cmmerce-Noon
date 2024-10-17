@@ -430,13 +430,11 @@ export const refundOrder = async (req, res, next) => {
   findOrder.orderStatus = "Refunded";
   await findOrder.save();
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      message: "Order refunded successfully",
-      order: refund,
-    });
+  res.status(200).json({
+    success: true,
+    message: "Order refunded successfully",
+    order: refund,
+  });
 };
 
 //================================= Cancel order within  1 day after create the order  API =================================//
@@ -469,4 +467,23 @@ export const cancelOrder = async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "Order Cancelled Done", order });
+};
+
+//================================= get order by id  =================================//
+/**
+ * * destructure data from params
+ * * get order by id
+ * * response successfully
+ */
+export const getOrderById = async (req, res, next) => {
+  // * destructure data from params
+  const { orderId } = req.params;
+
+  // * get order by id
+  const order = await Order.findById(orderId)
+  if (!order)
+    return next({ success: false, message: "Order not found", cause: 404 });
+
+  // * response successfully
+  res.status(200).json({ success: true, data: order });
 };
