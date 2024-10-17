@@ -15,7 +15,7 @@ router.post(
   expressAsyncHandler(cartController.addProductToCart)
 );
 
-router.put(
+router.delete(
   "/removeFromCart/:productId",
   auth(systemRoles.USER),
   validationMiddleware(validators.removeFromCartSchema),
