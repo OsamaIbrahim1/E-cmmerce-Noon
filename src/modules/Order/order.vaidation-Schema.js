@@ -7,7 +7,7 @@ export const addOrderSchema = {
     quantity: Joi.number().required(),
     couponCode: Joi.string().trim().lowercase(),
     paymentMethod: Joi.string().required().valid("Cash", "Stripe", "Paymob"),
-    phoneNumbers: Joi.Joi.string().required(),
+    phoneNumbers: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
     postalCode: Joi.string().required(),
