@@ -138,3 +138,27 @@ export const getCartData = async (req, res, next) => {
     data: userCart,
   });
 };
+
+//================================= clear cart =================================//
+/**
+ * * destructuring the cartId from params
+ * * check if cart is already exists and delete it
+ * * response successfully
+ */
+export const clearCart = async (req, res, next) => {
+  // * destructure data from params
+  const { cartId } = req.params;
+
+  // * check if cart is already exists and delete it
+  const cart = await Cart.findByIdAndDelete(cartId);
+  if (!cart) {
+    return next({ message: "Cart not found", cause: 404 });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "Cart cleared successfully",
+    data: cart,
+  });
+};

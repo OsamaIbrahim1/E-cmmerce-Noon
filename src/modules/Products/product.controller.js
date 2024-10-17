@@ -393,3 +393,4 @@ export const productsForSpecificBrand = async (req, res, next) => {
     .status(200)
     .json({ success: true, message: "Products found", data: products });
 };
+

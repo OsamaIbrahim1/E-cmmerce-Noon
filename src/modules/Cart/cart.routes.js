@@ -28,4 +28,10 @@ router.get(
   expressAsyncHandler(cartController.getCartData)
 );
 
+router.delete(
+  "/clearCart/:cartId",
+  auth(systemRoles.USER),
+  expressAsyncHandler(cartController.clearCart)
+);
+
 export default router;
