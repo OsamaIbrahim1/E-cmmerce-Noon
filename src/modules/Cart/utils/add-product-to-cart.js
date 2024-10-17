@@ -9,13 +9,13 @@ import { calculateSubTotal } from "./calculate-SubTotal.js";
  * @description add product to cart
  */
 
-
 export async function pushNewProduct(cart, product, quantity) {
   cart?.products.push({
     productId: product._id,
     quantity: quantity,
     basePrice: product.appliedPrice,
     title: product.title,
+    coverImage: product.Images[0].secure_url,
     finalPrice: product.appliedPrice * quantity,
   });
 

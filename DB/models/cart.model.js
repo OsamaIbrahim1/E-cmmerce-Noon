@@ -33,6 +33,10 @@ const cartSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        coverImage: {
+          type: String,
+          required: true,
+        },
       },
     ],
     subTotal: {
