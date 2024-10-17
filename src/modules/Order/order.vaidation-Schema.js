@@ -7,7 +7,7 @@ export const addOrderSchema = {
     quantity: Joi.number().required(),
     couponCode: Joi.string().trim().lowercase(),
     paymentMethod: Joi.string().required().valid("Cash", "Stripe", "Paymob"),
-    phoneNumbers: Joi.array().items(Joi.string().required()),
+    phoneNumbers: Joi.Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
     postalCode: Joi.string().required(),
@@ -20,7 +20,7 @@ export const convertCartToOrderSchema = {
   body: Joi.object({
     couponCode: Joi.string().trim().lowercase(),
     paymentMethod: Joi.string().required().valid("Cash", "Stripe", "Paymob"),
-    phoneNumbers: Joi.array().items(Joi.string().required()),
+    phoneNumbers: Joi.Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
     postalCode: Joi.string().required(),
@@ -49,5 +49,3 @@ export const cancelOrderSchema = {
   }),
   // // headers: generalRules.headersRules,
 };
-
-
