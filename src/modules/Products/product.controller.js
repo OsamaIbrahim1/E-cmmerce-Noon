@@ -360,3 +360,36 @@ export const productsForTwoSpecificBrands = async (req, res, next) => {
     .status(200)
     .json({ success: true, message: "Product found", data: products });
 };
+
+//======================================== get all products for specific brand ========================================//
+/**
+ * * destructure data from params
+ * * check if brand is already exists
+ * * get all products for the specified brand
+ * * response successfully
+ */
+export const productsForSpecificBrand = async (req, res, next) => {
+  // * destructure data from params
+  const { brandId } = req.params;
+
+  // * check if brand is already exists
+  const brand = await Brand.findById(brandId);
+  if (!brand) {
+    return next("Brand not found", { cause: 404 });
+  }
+
+  // * get all products for the specified brand
+  const products = await Product.find({ brandId });
+  if (products.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "No products found for this brand",
+      data: null,
+    });
+  }
+
+  // * response success
+  res
+    .status(200)
+    .json({ success: true, message: "Products found", data: products });
+};

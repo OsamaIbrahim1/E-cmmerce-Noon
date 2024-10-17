@@ -63,5 +63,10 @@ router.get(
   validationMiddleware(validators.productsForTwoSpecificBrandsSchema),
   expressAsyncHandler(productController.productsForTwoSpecificBrands)
 );
+router.get(
+  "/productsForSpecificBrand/:brandId",
+  auth(endPointsRoles.GET_PRODUCTS),
+  expressAsyncHandler(productController.productsForSpecificBrand)
+);
 
 export default router;
