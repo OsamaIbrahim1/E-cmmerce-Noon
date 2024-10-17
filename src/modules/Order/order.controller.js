@@ -480,10 +480,27 @@ export const getOrderById = async (req, res, next) => {
   const { orderId } = req.params;
 
   // * get order by id
-  const order = await Order.findById(orderId)
+  const order = await Order.findById(orderId);
   if (!order)
     return next({ success: false, message: "Order not found", cause: 404 });
 
   // * response successfully
   res.status(200).json({ success: true, data: order });
+};
+
+//========================== get all orders for user ==========================//
+/**
+ * * destructure data from authUser
+ * * get all orders for user
+ * * response successfully
+ */
+export const getAllOrders = async (req, res, next) => {
+  // * destructure data from authUser
+  const { _id: user } = req.authUser;
+
+  // * get all orders for user
+  const orders = await Order.find({ user });
+
+  // * response successfully
+  res.status(200).json({ success: true, message: "Your Orders", data: orders });
 };

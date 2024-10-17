@@ -61,4 +61,10 @@ router.get(
   expressAsyncHandler(orderController.getOrderById)
 );
 
+router.get(
+  "/getAllOrders",
+  auth([systemRoles.USER]),
+  expressAsyncHandler(orderController.getAllOrders)
+);
+
 export default router;
