@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema(
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
     },
-    phoneNumbers: [{ type: String, required: true }],
+    phoneNumbers: { type: String, required: true },
 
     shippingPrice: { type: Number, required: true }, // * array subtotal
     coupon: {
