@@ -26,7 +26,6 @@ const orderSchema = new mongoose.Schema(
       country: { type: String, required: true },
     },
     phoneNumbers: { type: String, required: true },
-
     shippingPrice: { type: Number, required: true }, // * array subtotal
     coupon: {
       type: mongoose.Schema.Types.ObjectId,
