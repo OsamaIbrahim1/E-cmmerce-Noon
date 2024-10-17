@@ -106,7 +106,7 @@ export const removeFromCart = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "product delete to cart successfully",
+    message: "product delete from cart successfully",
     data: newCart,
   });
 };
@@ -124,7 +124,11 @@ export const getCartData = async (req, res, next) => {
   // * get the user's cart
   const userCart = await Cart.findOne({ userId });
   if (!userCart) {
-    return next({ message: `Cart not found`, cause: 404 });
+    return res.status(200).json({
+      success: false,
+      message: "user cart is empty",
+      data: null,
+    });
   }
 
   // * response successfully
