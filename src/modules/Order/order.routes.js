@@ -64,6 +64,10 @@ router.get(
 router.get(
   "/getAllOrders",
   auth([systemRoles.USER]),
+  (req, res, next) => {
+    console.log("middleware");
+    next();
+  },
   expressAsyncHandler(orderController.getAllOrders)
 );
 

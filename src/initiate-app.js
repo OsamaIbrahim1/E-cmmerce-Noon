@@ -6,15 +6,15 @@ import { gracefulShutdown } from "node-schedule";
 import cors from "cors";
 import * as routers from "./modules/index.routes.js";
 import { cronToChangeExpiredCoupons } from "./utils/crons.js";
+import { corsOptions } from "./utils/cors.js";
 
 export const initiateApp = (app, express) => {
   const port = +process.env.port || 3000;
 
   app.use(express.json());
 
-  app.use(
-    cors({ origin: "http://localhost:3000", methods: "GET,POST,PUT,DELETE" })
-  );
+  app.use(cors(corsOptions));
+
 
   app.use("/auth", routers.userRouter);
   app.use("/category", routers.categoryRouter);
