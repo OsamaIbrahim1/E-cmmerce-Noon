@@ -394,3 +394,21 @@ export const productsForSpecificBrand = async (req, res, next) => {
     .json({ success: true, message: "Products found", data: products });
 };
 
+//========================= get Products Category ==========================//
+/**
+ * * destructure data from params
+ * * check if category is already exists
+ * * response successfully
+ */
+export const getProductsCategory = async (req, res, next) => {
+  // * destructure data from params
+  const { categoryId } = req.params;
+
+  // * check if category is already exists
+  const products = await Product.find({ categoryId });
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "products found", data: products });
+};

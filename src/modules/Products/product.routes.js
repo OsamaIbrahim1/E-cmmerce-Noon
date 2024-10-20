@@ -68,5 +68,10 @@ router.get(
   auth(endPointsRoles.GET_PRODUCTS),
   expressAsyncHandler(productController.productsForSpecificBrand)
 );
+router.get(
+  "/getProductsCategory/:categoryId",
+  auth(endPointsRoles.GET_PRODUCTS),
+  expressAsyncHandler(productController.getProductsCategory)
+);
 
 export default router;
