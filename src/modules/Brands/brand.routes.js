@@ -41,6 +41,12 @@ router.get(
 );
 
 router.get(
+  "/getBrandById/:brandId",
+  auth(endPointsRoles.ALL_USERS),
+  expressAsyncHandler(brandController.getBrands)
+);
+
+router.get(
   "/getAllBrandsWithPagination",
   auth(endPointsRoles.ALL_USERS),
   expressAsyncHandler(brandController.getAllBrandsWithPagination)

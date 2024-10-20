@@ -217,6 +217,25 @@ export const getBrands = async (req, res, next) => {
     .status(200)
     .json({ success: true, message: "brands existing.", data: brands });
 };
+//===================================== get brand By Id =====================================//
+/**
+ * * destructure data from params
+ * * get brand by id
+ * * response Successfully
+ */
+export const getBrandById = async (req, res, next) => {
+  // * destructure data from params
+  const { brandId } = req.params;
+
+  // * get brand by id
+  const brand = await Brand.findById({ _id: brandId });
+  if (!brand) return next(new Error("Brand not found", { cause: 404 }));
+
+  // * response Successfully
+  res
+    .status(200)
+    .json({ success: true, message: "brands existing.", data: brand });
+};
 
 //================================= get All brand with pagination =================================//
 /**
