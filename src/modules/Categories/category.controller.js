@@ -211,7 +211,11 @@ export const getCategories = async (req, res, next) => {
  *  * get all category with populate "subCategories" and populate "Brands"
  * * response successfully
  */
-export const getAllCategoryWithSubCategoryWithBrand = async (req, res, next) => {
+export const getAllCategoryWithSubCategoryWithBrand = async (
+  req,
+  res,
+  next
+) => {
   // * destructure data from query
   const { page, size, sort, ...search } = req.query;
 
@@ -324,9 +328,6 @@ export const getAllBrandForCategory = async (req, res, next) => {
 
   // * check brands for category
   const brands = await Brand.find({ categoryId });
-  if (!brands.length) {
-    return next({ message: "Brands not found for this Category", cause: 404 });
-  }
 
   // * response successfully
   res
