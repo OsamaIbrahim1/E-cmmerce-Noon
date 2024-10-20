@@ -43,7 +43,7 @@ router.get(
 router.get(
   "/getBrandById/:brandId",
   auth(endPointsRoles.ALL_USERS),
-  expressAsyncHandler(brandController.getBrands)
+  expressAsyncHandler(brandController.getBrandById)
 );
 
 router.get(
