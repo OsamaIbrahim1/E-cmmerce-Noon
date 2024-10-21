@@ -1,6 +1,7 @@
 const allowedOrigins = [
   "http://localhost:3000",
   "https://frontend-ecommerce-noon-99mgics38-osamaibrahim1s-projects.vercel.app",
+  "https://frontend-ecommerce-noon.vercel.app"
 ];
 
 export const corsOptions = {
