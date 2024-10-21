@@ -74,4 +74,5 @@ router.get(
   expressAsyncHandler(productController.getProductsCategory)
 );
 
+
 export default router;
