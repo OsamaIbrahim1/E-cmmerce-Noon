@@ -355,7 +355,7 @@ export const forgetPassword = async (req, res, next) => {
     { expiresIn: "1h" }
   );
   console.log(token);
-  const resetPasswordLink = `http://localhost:3000/auth/resetPassword/${token}`;
+  const resetPasswordLink = `http://localhost:3000/resetPassword/${token}`;
 
   // * send reset password email to the user and check if sent
   const isEmailSent = await sendEmailService({
