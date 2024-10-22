@@ -35,7 +35,7 @@ export const updateUserSchema = {
     email: Joi.string().trim().lowercase().email(),
     // password: Joi.string().min(6),
     phoneNumbers: Joi.string().min(11).max(20),
-    addresses: Joi.string(),
+    address: Joi.string(),
     // role: Joi.string()
     // .valid(systemRoles.ADMIN, systemRoles.USER, systemRoles.SUPER_ADMIN)
     // .default(systemRoles.USER),
