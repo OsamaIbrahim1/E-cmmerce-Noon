@@ -354,8 +354,8 @@ export const forgetPassword = async (req, res, next) => {
     process.env.RESET_Token,
     { expiresIn: "1h" }
   );
-
-  const resetPasswordLink = `https://e-cmmerce-noon-5.onrender.com/auth/resetPassword/${token}`;
+  console.log(token);
+  const resetPasswordLink = `http://localhost:3000/auth/resetPassword/${token}`;
 
   // * send reset password email to the user and check if sent
   const isEmailSent = await sendEmailService({
