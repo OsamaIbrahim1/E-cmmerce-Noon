@@ -36,9 +36,6 @@ export const updateUserSchema = {
     // password: Joi.string().min(6),
     phoneNumbers: Joi.string().min(11).max(20),
     address: Joi.string(),
-    // role: Joi.string()
-    // .valid(systemRoles.ADMIN, systemRoles.USER, systemRoles.SUPER_ADMIN)
-    // .default(systemRoles.USER),
     age: Joi.number().min(18).max(100),
   }),
 };

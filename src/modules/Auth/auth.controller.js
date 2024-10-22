@@ -374,9 +374,7 @@ export const forgetPassword = async (req, res, next) => {
   await user.save();
 
   // * response successfully
-  res
-    .status(200)
-    .json({ success: true, message: `code sent successfully`, user });
+  res.status(200).json({ success: true, message: `code sent successfully` });
 };
 
 //==================================  reset password =========================//
