@@ -381,7 +381,7 @@ export const productsForSpecificBrand = async (req, res, next) => {
   // * get all products for the specified brand
   const products = await Product.find({ brandId });
   if (products.length === 0) {
-    return res.status(400).json({
+    return res.status(200).json({
       success: false,
       message: "No products found for this brand",
     });
