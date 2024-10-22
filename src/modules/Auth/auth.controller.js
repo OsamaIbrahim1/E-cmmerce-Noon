@@ -355,7 +355,7 @@ export const forgetPassword = async (req, res, next) => {
     { expiresIn: "1h" }
   );
 
-  const resetPasswordLink = `${req.protocol}://${req.headers.host}/auth/resetPassword/${token}`;
+  const resetPasswordLink = `https://e-cmmerce-noon-5.onrender.com/auth/resetPassword/${token}`;
 
   // * send reset password email to the user and check if sent
   const isEmailSent = await sendEmailService({
