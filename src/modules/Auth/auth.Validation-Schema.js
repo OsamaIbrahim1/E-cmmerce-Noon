@@ -33,12 +33,12 @@ export const updateUserSchema = {
   body: Joi.object({
     username: Joi.string().min(3).max(20).trim().lowercase(),
     email: Joi.string().trim().lowercase().email(),
-    password: Joi.string().min(6),
+    // password: Joi.string().min(6),
     phoneNumbers: Joi.array().items(Joi.string().min(11).max(20)),
     addresses: Joi.array().items(Joi.string()),
-    role: Joi.string()
-      .valid(systemRoles.ADMIN, systemRoles.USER, systemRoles.SUPER_ADMIN)
-      .default(systemRoles.USER),
+    // role: Joi.string()
+    // .valid(systemRoles.ADMIN, systemRoles.USER, systemRoles.SUPER_ADMIN)
+    // .default(systemRoles.USER),
     age: Joi.number().min(18).max(100),
   }),
 };
