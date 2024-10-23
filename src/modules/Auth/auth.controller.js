@@ -355,7 +355,7 @@ export const forgetPassword = async (req, res, next) => {
     { expiresIn: "1h" }
   );
 
-  const resetPasswordLink = `http://localhost:3000/resetPassword/${token}`;
+  const resetPasswordLink = `https://frontend-ecommerce-noon.vercel.app/resetPassword/${token}`;
 
   // * send reset password email to the user and check if sent
   const isEmailSent = await sendEmailService({
